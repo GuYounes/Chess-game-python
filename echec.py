@@ -4,7 +4,6 @@ import time
 #Les images des pièces doîvent être de case_side x cas_side et les images 
 #pour la transformation doivent être deux fois plus grande
 
-
 pygame.init()
 
 display_height = int(1000)
@@ -28,47 +27,46 @@ green = (0,255,0)
 blue = (0,0,255)
 bright_green = (0,200,0)
 
-
-background = pygame.image.load('fond.jpg')
-Icon = pygame.image.load('ico.jpg')
-ImbouttonJ1i = pygame.image.load('Image_boutton_menu_inactif.png')
-ImbouttonJ1a = pygame.image.load('Image_boutton_menu_actif.png')
-Imvalidation = pygame.image.load('validation.png')
-Imelimination = pygame.image.load('elimination.png')
-Impb = pygame.image.load('PIONB.png')
-Impn = pygame.image.load('PIONN.png')
-Imtb = pygame.image.load('TOURB.png')
-Imtn = pygame.image.load('TOURN.png')
-Imcb = pygame.image.load('CAVALIERB.png')
-Imcn = pygame.image.load('CAVALIERN.png')
-Imfb = pygame.image.load('FOUB.png')
-Imfn = pygame.image.load('FOUN.png')
-Imdb = pygame.image.load('DAMEB.png')
-Imdn = pygame.image.load('DAMEN.png')
-Imrb = pygame.image.load('ROIB.png')
-Imrn = pygame.image.load('ROIN.png')
+background = pygame.image.load('img/fond.jpg')
+Icon = pygame.image.load('img/ico.jpg')
+ImbouttonJ1i = pygame.image.load('img/Image_boutton_menu_inactif.png')
+ImbouttonJ1a = pygame.image.load('img/Image_boutton_menu_actif.png')
+Imvalidation = pygame.image.load('img/validation.png')
+Imelimination = pygame.image.load('img/elimination.png')
+Impb = pygame.image.load('img/PIONB.png')
+Impn = pygame.image.load('img/PIONN.png')
+Imtb = pygame.image.load('img/TOURB.png')
+Imtn = pygame.image.load('img/TOURN.png')
+Imcb = pygame.image.load('img/CAVALIERB.png')
+Imcn = pygame.image.load('img/CAVALIERN.png')
+Imfb = pygame.image.load('img/FOUB.png')
+Imfn = pygame.image.load('img/FOUN.png')
+Imdb = pygame.image.load('img/DAMEB.png')
+Imdn = pygame.image.load('img/DAMEN.png')
+Imrb = pygame.image.load('img/ROIB.png')
+Imrn = pygame.image.load('img/ROIN.png')
 
 #pour la fonction transformation
-Im_showi = pygame.image.load('Im_showi.png')
-Im_showa = pygame.image.load('Im_showa.png')
+Im_showi = pygame.image.load('img/Im_showi.png')
+Im_showa = pygame.image.load('img/Im_showa.png')
 
-ImTBi = pygame.image.load('TBi.png')
-ImTBa = pygame.image.load('TBa.png')
-ImCBi = pygame.image.load('CBi.png')
-ImCBa = pygame.image.load('CBa.png')
-ImFBi = pygame.image.load('FBi.png')
-ImFBa = pygame.image.load('FBa.png')
-ImDBi = pygame.image.load('DBi.png')
-ImDBa = pygame.image.load('DBa.png')
+ImTBi = pygame.image.load('img/TBi.png')
+ImTBa = pygame.image.load('img/TBa.png')
+ImCBi = pygame.image.load('img/CBi.png')
+ImCBa = pygame.image.load('img/CBa.png')
+ImFBi = pygame.image.load('img/FBi.png')
+ImFBa = pygame.image.load('img/FBa.png')
+ImDBi = pygame.image.load('img/DBi.png')
+ImDBa = pygame.image.load('img/DBa.png')
 
-ImTNi = pygame.image.load('TNi.png')
-ImTNa = pygame.image.load('TNa.png')
-ImCNi = pygame.image.load('CNi.png')
-ImCNa = pygame.image.load('CNa.png')
-ImFNi = pygame.image.load('FNi.png')
-ImFNa = pygame.image.load('FNa.png')
-ImDNi = pygame.image.load('DNi.png')
-ImDNa = pygame.image.load('DNa.png')
+ImTNi = pygame.image.load('img/TNi.png')
+ImTNa = pygame.image.load('img/TNa.png')
+ImCNi = pygame.image.load('img/CNi.png')
+ImCNa = pygame.image.load('img/CNa.png')
+ImFNi = pygame.image.load('img/FNi.png')
+ImFNa = pygame.image.load('img/FNa.png')
+ImDNi = pygame.image.load('img/DNi.png')
+ImDNa = pygame.image.load('img/DNa.png')
 
 
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -103,11 +101,11 @@ tab64 = (21, 22, 23, 24, 25, 26, 27, 28,
 
         
 class vide:
-	equipe = "neutre"
-	rang = "vide"
-	valeur = 0
+	
 	def __init__(self):
-		pass
+		self.equipe = "neutre"
+		self.rang = "vide"
+		self.valeur = 0
 
 class white:
 
@@ -146,7 +144,7 @@ class white:
 
 					
 
-	def voir_deplacement(self, piece, liste_plateau, liste_case):
+	def voir_deplacement(self, piece, liste_plateau, liste_case): 
 
 		liste_deplacement = []
 		indice_piece = liste_plateau.index(piece)
@@ -161,7 +159,7 @@ class white:
 
 		elif piece.rang == "tour" or piece.rang == "fou" or piece.rang == "dame":
 			for i in piece.valeur_deplacement:
-				for j in range (1,8):
+				for j in range (1,7):
 					try:
 						valeur120 = tab120[valeur_64 + i *j ]
 
