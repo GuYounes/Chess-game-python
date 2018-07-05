@@ -4,6 +4,7 @@ import time
 #Les images des pièces doîvent être de case_side x cas_side et les images 
 #pour la transformation doivent être deux fois plus grande
 
+
 pygame.init()
 
 display_height = int(1000)
@@ -27,46 +28,47 @@ green = (0,255,0)
 blue = (0,0,255)
 bright_green = (0,200,0)
 
-background = pygame.image.load('img/fond.jpg')
-Icon = pygame.image.load('img/ico.jpg')
-ImbouttonJ1i = pygame.image.load('img/Image_boutton_menu_inactif.png')
-ImbouttonJ1a = pygame.image.load('img/Image_boutton_menu_actif.png')
-Imvalidation = pygame.image.load('img/validation.png')
-Imelimination = pygame.image.load('img/elimination.png')
-Impb = pygame.image.load('img/PIONB.png')
-Impn = pygame.image.load('img/PIONN.png')
-Imtb = pygame.image.load('img/TOURB.png')
-Imtn = pygame.image.load('img/TOURN.png')
-Imcb = pygame.image.load('img/CAVALIERB.png')
-Imcn = pygame.image.load('img/CAVALIERN.png')
-Imfb = pygame.image.load('img/FOUB.png')
-Imfn = pygame.image.load('img/FOUN.png')
-Imdb = pygame.image.load('img/DAMEB.png')
-Imdn = pygame.image.load('img/DAMEN.png')
-Imrb = pygame.image.load('img/ROIB.png')
-Imrn = pygame.image.load('img/ROIN.png')
+
+background = pygame.image.load('Images/fond.jpg')
+Icon = pygame.image.load('Images/ico.jpg')
+ImbouttonJ1i = pygame.image.load('Images/Image_boutton_menu_inactif.png')
+ImbouttonJ1a = pygame.image.load('Images/Image_boutton_menu_actif.png')
+Imvalidation = pygame.image.load('Images/validation.png')
+Imelimination = pygame.image.load('Images/elimination.png')
+Impb = pygame.image.load('Images/PIONB.png')
+Impn = pygame.image.load('Images/PIONN.png')
+Imtb = pygame.image.load('Images/TOURB.png')
+Imtn = pygame.image.load('Images/TOURN.png')
+Imcb = pygame.image.load('Images/CAVALIERB.png')
+Imcn = pygame.image.load('Images/CAVALIERN.png')
+Imfb = pygame.image.load('Images/FOUB.png')
+Imfn = pygame.image.load('Images/FOUN.png')
+Imdb = pygame.image.load('Images/DAMEB.png')
+Imdn = pygame.image.load('Images/DAMEN.png')
+Imrb = pygame.image.load('Images/ROIB.png')
+Imrn = pygame.image.load('Images/ROIN.png')
 
 #pour la fonction transformation
-Im_showi = pygame.image.load('img/Im_showi.png')
-Im_showa = pygame.image.load('img/Im_showa.png')
+Im_showi = pygame.image.load('Images/Im_showi.png')
+Im_showa = pygame.image.load('Images/Im_showa.png')
 
-ImTBi = pygame.image.load('img/TBi.png')
-ImTBa = pygame.image.load('img/TBa.png')
-ImCBi = pygame.image.load('img/CBi.png')
-ImCBa = pygame.image.load('img/CBa.png')
-ImFBi = pygame.image.load('img/FBi.png')
-ImFBa = pygame.image.load('img/FBa.png')
-ImDBi = pygame.image.load('img/DBi.png')
-ImDBa = pygame.image.load('img/DBa.png')
+ImTBi = pygame.image.load('Images/TBi.png')
+ImTBa = pygame.image.load('Images/TBa.png')
+ImCBi = pygame.image.load('Images/CBi.png')
+ImCBa = pygame.image.load('Images/CBa.png')
+ImFBi = pygame.image.load('Images/FBi.png')
+ImFBa = pygame.image.load('Images/FBa.png')
+ImDBi = pygame.image.load('Images/DBi.png')
+ImDBa = pygame.image.load('Images/DBa.png')
 
-ImTNi = pygame.image.load('img/TNi.png')
-ImTNa = pygame.image.load('img/TNa.png')
-ImCNi = pygame.image.load('img/CNi.png')
-ImCNa = pygame.image.load('img/CNa.png')
-ImFNi = pygame.image.load('img/FNi.png')
-ImFNa = pygame.image.load('img/FNa.png')
-ImDNi = pygame.image.load('img/DNi.png')
-ImDNa = pygame.image.load('img/DNa.png')
+ImagesImTNi = pygame.image.load('Images/TNi.png')
+ImagesImTNa = pygame.image.load('Images/TNa.png')
+ImagesImCNi = pygame.image.load('Images/CNi.png')
+ImagesImCNa = pygame.image.load('Images/CNa.png')
+ImagesImFNi = pygame.image.load('Images/FNi.png')
+ImagesImFNa = pygame.image.load('Images/FNa.png')
+ImagesImDNi = pygame.image.load('Images/DNi.png')
+ImDNa = pygame.image.load('Images/DNa.png')
 
 
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -101,11 +103,11 @@ tab64 = (21, 22, 23, 24, 25, 26, 27, 28,
 
         
 class vide:
-	
+	equipe = "neutre"
+	rang = "vide"
+	valeur = 0
 	def __init__(self):
-		self.equipe = "neutre"
-		self.rang = "vide"
-		self.valeur = 0
+		pass
 
 class white:
 
@@ -144,7 +146,7 @@ class white:
 
 					
 
-	def voir_deplacement(self, piece, liste_plateau, liste_case): 
+	def voir_deplacement(self, piece, liste_plateau, liste_case):
 
 		liste_deplacement = []
 		indice_piece = liste_plateau.index(piece)
@@ -206,18 +208,37 @@ class white:
 				if valeur120 != -1:
 					if liste_plateau[valeur120].equipe != "blanc":
 						liste_deplacement.append(valeur120)
+			if not piece.moved and not tb1.moved and liste_plateau[57].equipe == "neutre" and liste_plateau[58].equipe == "neutre" and liste_plateau[59].equipe == "neutre" and not piece.echec:
+				liste_deplacement.append(58)
+			if not piece.moved and not tb2.moved and liste_plateau[61].equipe == "neutre" and liste_plateau[62].equipe == "neutre" and not piece.echec:
+				liste_deplacement.append(62)
 
 		return liste_deplacement
 	
 		
 	def deplacement(cls, liste_plateau, piece, i, liste_case):
-		if piece.rang == "pion" or piece.rang == "tour" or piece.rang == "roi":
-			piece.moved = True
+
 		indice_piece = liste_plateau.index(piece)
 
-		if liste_plateau[i].equipe == "neutre":
+		grandrock = (piece.rang == "roi") and i == 58
+
+		petitrock = (piece.rang == "roi") and i == 62
+
+		if piece.rang == "pion" or piece.rang == "tour" or piece.rang == "roi":
+			piece.moved = True
+
+		if grandrock:
+			liste_plateau[indice_piece], liste_plateau[i] = liste_plateau[i], liste_plateau[indice_piece]
+			liste_plateau[56], liste_plateau[59] = liste_plateau[59], liste_plateau[56]
+			return liste_plateau
+
+		if petitrock:
+			liste_plateau[indice_piece], liste_plateau[i] = liste_plateau[i], liste_plateau[indice_piece]
+			liste_plateau[63], liste_plateau[61] = liste_plateau[61], liste_plateau[63]
+			return liste_plateau
+
+		if liste_plateau[i].equipe == "neutre" and not grandrock and not petitrock:
 			liste_plateau[i], liste_plateau[indice_piece] = liste_plateau[indice_piece], liste_plateau[i]
-			piece.isselected = False
 			if piece.rang == "pion" and 8 <= indice_piece <=15:
 				echiquier()
 				printpieces(liste_plateau, liste_case)
@@ -227,7 +248,6 @@ class white:
 		else:
 			liste_plateau[i].equipe,liste_plateau[i].rang = "neutre", "vide"
 			liste_plateau[i], liste_plateau[indice_piece] = liste_plateau[indice_piece], liste_plateau[i]
-			piece.isselected = False
 			if piece.rang == "pion" and 8 <= indice_piece <=15:
 				echiquier()
 				printpieces(liste_plateau, liste_case)
@@ -282,6 +302,8 @@ class wroi(white):
 	rang = "roi"
 	valeur = 100
 	valeur_deplacement = [ -10, +10, -1, +1, -11, -9, +11, +9 ]
+	echec = False
+	moved = False
 
 	def __init__(self):
 		white.__init__(self)
@@ -320,9 +342,8 @@ class black:
 						if (liste_case[i][0] < mouse[0] < liste_case[i][0] + case_side) and (liste_case[i][1] < mouse[1] < liste_case[i][1] + case_side):
 							liste_plateau = piece.deplacement(liste_plateau, piece, i, liste_case)
 					piece.isselected = False
-		return liste_plateau
 
-					
+		return liste_plateau
 
 	def voir_deplacement(self, piece, liste_plateau, liste_case):
 
@@ -339,7 +360,7 @@ class black:
 
 		elif piece.rang == "tour" or piece.rang == "fou" or piece.rang == "dame":
 			for i in piece.valeur_deplacement:
-				for j in range (1,8):
+				for j in range (1,7):
 					try:
 						valeur120 = tab120[valeur_64 + i *j ]
 
@@ -375,6 +396,7 @@ class black:
 				if valeur120 != -1:
 					if liste_plateau[valeur120].equipe == "neutre":
 						liste_deplacement.append(valeur120)
+
 						
 			if indice_piece + 9 <= 63:			
 				if liste_plateau[indice_piece + 9].equipe == "blanc" and tab120[ valeur_64 + 11 ] != -1:
@@ -389,6 +411,10 @@ class black:
 				if valeur120 != -1:
 					if liste_plateau[valeur120].equipe != "noir":
 						liste_deplacement.append(valeur120)
+				if not piece.moved and not tn1.moved and liste_plateau[1].equipe == "neutre" and liste_plateau[2].equipe == "neutre" and liste_plateau[3].equipe == "neutre" and not piece.echec:
+					liste_deplacement.append(2)
+				if not piece.moved and not tn2.moved and liste_plateau[5].equipe == "neutre" and liste_plateau[6].equipe == "neutre" and not piece.echec:
+					liste_deplacement.append(6)
 
 					
 
@@ -396,13 +422,30 @@ class black:
 	
 		
 	def deplacement(cls, liste_plateau, piece, i, liste_case):
-		if piece.rang == "pion" or piece.rang == "tour" or piece.rang == "roi":
-			piece.moved = True
+
 		indice_piece = liste_plateau.index(piece)
 
-		if liste_plateau[i].equipe == "neutre":
+		grandrock = (piece.rang == "roi") and i == 2
+
+		petitrock = (piece.rang == "roi") and i == 6
+
+		if piece.rang == "pion" or piece.rang == "tour" or piece.rang == "roi":
+			piece.moved = True
+
+
+		if grandrock:
+			liste_plateau[indice_piece], liste_plateau[i] = liste_plateau[i], liste_plateau[indice_piece]
+			liste_plateau[0], liste_plateau[3] = liste_plateau[3], liste_plateau[0]
+			return liste_plateau
+
+		if petitrock:
+			liste_plateau[indice_piece], liste_plateau[i] = liste_plateau[i], liste_plateau[indice_piece]
+			liste_plateau[7], liste_plateau[5] = liste_plateau[5], liste_plateau[7]
+			print("petit")
+			return liste_plateau
+
+		if liste_plateau[i].equipe == "neutre" and not petitrock and not grandrock:
 			liste_plateau[i], liste_plateau[indice_piece] = liste_plateau[indice_piece], liste_plateau[i]
-			piece.isselected = False
 			if piece.rang == "pion" and 48 <= indice_piece <= 55:
 				echiquier()
 				printpieces(liste_plateau, liste_case)
@@ -412,12 +455,12 @@ class black:
 		else:
 			liste_plateau[i].equipe,liste_plateau[i].rang = "neutre", "vide"
 			liste_plateau[i], liste_plateau[indice_piece] = liste_plateau[indice_piece], liste_plateau[i]
-			piece.isselected = False
 			if piece.rang == "pion" and 48 <= indice_piece <= 55:
 				echiquier()
 				printpieces(liste_plateau, liste_case)
 				transformation("noir", piece, liste_plateau, liste_case)
 			return liste_plateau
+
 
 
 class bpion(black):
@@ -467,6 +510,8 @@ class broi(black):
 	rang = "roi"
 	valeur = 100
 	valeur_deplacement = [ -10, +10, -1, +1, -11, -9, +11, +9 ]
+	echec = False
+	moved = False
 
 	def __init__(self):
 		black.__init__(self)
@@ -581,12 +626,12 @@ def echiquier():
 			if (j+i)%2 == 0:
 				i = border + side_gap + (i * case_side)
 				j = side_gap + j * case_side
-				list_definecase.append(print_echiquiercase(j, i, W))
+				list_definecase.append(print_echiquiercase( j, i, W))
 
 			else:
 				i = border + side_gap + (i * case_side)
 				j = side_gap + j * case_side
-				list_definecase.append(print_echiquiercase(j , i, B))
+				list_definecase.append(print_echiquiercase( j, i, B))
 	return list_definecase
 
 
