@@ -2,32 +2,32 @@
 	"moves": {
 		"pawn": {
 			"white": {
-				"direction": [-9, -10, -11, -20],
+				"directions": [-9, -10, -11, -20],
 				"range": 1
 			},
 			"black": {
-				"direction": [9, 10, 11, 20],
+				"directions": [9, 10, 11, 20],
 				"range": 1
 			}
 		},
 		"rook": {
-			"direction": [ -10, 10, -1, 1 ],
+			"directions": [ -10, 10, -1, 1 ],
 			"range": "7"
 		},
 		"bishop": {
-			"direction": [ -11, -9, 11, 9 ],
+			"directions": [ -11, -9, 11, 9 ],
 			"range": 7
 		},
 		"knight": {
-			"direction": [ -12,-21, -19, -8, 12, 21, 19, 8 ],
+			"directions": [ -12,-21, -19, -8, 12, 21, 19, 8 ],
 			"range": 1
 		},
 		"king": {
-			"direction": [ -10, 10, -1, 1, -11, -9, 11, 9 ],
+			"directions": [ -10, 10, -1, 1, -11, -9, 11, 9 ],
 			"range": 1
 		},
 		"queen": {
-			"direction": [ -10, 10, -1, 1, -11, -9, 11, 9 ],
+			"directions": [ -10, 10, -1, 1, -11, -9, 11, 9 ],
 			"range": 7
 		}
 	}

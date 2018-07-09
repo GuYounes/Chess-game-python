@@ -1,34 +1,40 @@
 import json
 from enums.enums import ESide, EPiece
 
-"""
-{
-    "moves": {
-		"pawn": {
-			"white": {
-				"direction": [-9, -10, -11, -20],
-				"range": 1
-			},
-			"black": {
-				"direction": [9, 10, 11, 20],
-				"range": 1
-			}
-		},
-		"rook": {
-			"direction": [ -10, 10, -1, 1 ],
-			"range": "7"
-		},
-		"bishop": {
-			"direction": [ -11, -9, 11, 9 ],
-			"range": 7
-		},
-    }
-}
-"""
-with open('config/moves.json') as movesConfigFile:
-    moves = json.load(movesConfigFile).get("moves")
-
 class Piece:
+
+	"""
+	{
+	    "moves": {
+			"pawn": {
+				"white": {
+					"direction": [-9, -10, -11, -20],
+					"range": 1
+				},
+				"black": {
+					"direction": [9, 10, 11, 20],
+					"range": 1
+				}
+			},
+			"rook": {
+				"direction": [ -10, 10, -1, 1 ],
+				"range": "7"
+			},
+			"bishop": {
+				"direction": [ -11, -9, 11, 9 ],
+				"range": 7
+			},
+	    }
+	}
+	"""
+	with open('config/moves.json') as movesConfigFile:
+	    moves = json.load(movesConfigFile).get("moves")
+
+	with open('config/mailBox.json') as mailBoxFile:
+		tabs = json.load(mailBoxFile)
+
+	tab120 = tabs.get("tab120")
+	tab64 = tabs.get("tab64")
 
 	#piece: EPiece
 	#side: ESide
@@ -37,26 +43,15 @@ class Piece:
 		self.piece = piece
 		self.side = side
 		self.coord = coord
+		self.firstMove = True
 		self.initRange()
 		self.initDirection()
 
 	def __str__(self): 
-		return "Piece de type {0}, camp {1}, direction {2}, range {3}".format(self.piece.name, self.side.name, self.direction, self.range)
+		return "Piece de type {0}, camp {1}, direction {2}, range {3}, coord {4}".format(self.piece.name, self.side.name, self.directions, self.range, self.coord)
 
 	def __repr__(self):
 		return str(self) + "\n";
-
-	def initRange(self):
-		if (self.piece == EPiece.PAWN):
-			self.range = moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("range");
-		else: 
-			self.range = moves.get(self.piece.name.lower()).get("range");
-
-	def initDirection(self):
-		if (self.piece == EPiece.PAWN):
-			self.direction = moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("direction");
-		else:  
-			self.direction = moves.get(self.piece.name.lower()).get("direction");
 
 	# Initialize a new Piece with an object
 	# {
@@ -66,3 +61,58 @@ class Piece:
 	def init(side, object):
 		return Piece(EPiece[object.get("type").upper()], side, object.get("coord"))
 
+	def initRange(self):
+		if (self.piece == EPiece.PAWN):
+			self.range = self.moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("range");
+		else: 
+			self.range = self.moves.get(self.piece.name.lower()).get("range");
+
+	def initDirection(self):
+		if (self.piece == EPiece.PAWN):
+			self.directions = self.moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("directions");
+		else:  
+			self.directions = self.moves.get(self.piece.name.lower()).get("directions");
+
+	def coordsFromVector(self, moveVector):
+		value64 = self.tab64[self.coord]
+		return self.tab120[value64 + moveVector]
+
+	def isOutOfBounds(self, moveVector): 
+		coords = self.coordsFromVector(moveVector)
+		if (coords == -1): return True
+		return False
+
+	"""
+	occupiedCases:[
+			"piece": piece (typeof Piece)
+	]
+	"""
+	def isAllyPiece(self, occupiedCases, coord):
+		for piece in occupiedCases:
+			if (piece.coord == coord):
+				if (piece.side == self.side):
+					return True
+		return False
+
+	# See isAllyPiece
+	def isEnemyPiece(self, occupiedCases, coord):
+		for piece in occupiedCases:
+			if (piece.coord == coord):
+				if (piece.side != self.side):
+					return True
+		return False
+
+	def availableMoves(self, occupiedCases):
+		availableMoves = []
+
+		if(self.piece == EPiece.PAWN): return
+
+		for k in self.directions:
+			for i in range(1, self.range + 1):
+				if (self.isOutOfBounds(k*i)): break
+				if (self.isAllyPiece(occupiedCases, self.coordsFromVector(k*i))): break
+				if (self.isEnemyPiece(occupiedCases, self.coordsFromVector(k*i))):
+					availableMoves.append(self.coordsFromVector(k*i))
+					break
+				availableMoves.append(self.coordsFromVector(k*i))
+		return availableMoves;
