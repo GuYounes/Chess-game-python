@@ -13,7 +13,6 @@ border = ( 1/3 * display_width ) / 2
 side_gap = ( display_height * 0.1 )
 echiquier_side = display_height - 2 * side_gap
 case_side = echiquier_side /8
-line_width = 10
 bouttonmenu_height = int((display_height * 0.7) * (3/20))
 bouttonmenu_width = int(display_height * (2/5))
 bouttonmenu_heightgap = int((display_height * 0.7 - 4 * bouttonmenu_height) / 5)
@@ -53,11 +52,24 @@ Imboutton_quiti = pygame.image.load('SetImages1/Imboutton_quiti.png')
 Imboutton_quita = pygame.image.load('SetImages1/Imboutton_quita.png')
 Imboutton_quitc = pygame.image.load('SetImages1/Imboutton_quitc.png')
 
+#Boutton échiquier
+Imboutton_MainMenui = pygame.image.load('SetImages1/Imboutton_MainMenui.png')
+Imboutton_MainMenua = pygame.image.load('SetImages1/Imboutton_MainMenua.png')
+Imboutton_MainMenuc = pygame.image.load('SetImages1/Imboutton_MainMenuc.png')
 
+Imboutton_NewGamei = pygame.image.load('SetImages1/Imboutton_NewGamei.png') 
+Imboutton_NewGamea = pygame.image.load('SetImages1/Imboutton_NewGamea.png')
+Imboutton_NewGamec = pygame.image.load('SetImages1/Imboutton_NewGamec.png') 
+
+Imboutton_Undoi = pygame.image.load('SetImages1/Imboutton_Undoi.png')
+Imboutton_Undoa = pygame.image.load('SetImages1/Imboutton_Undoa.png')
+Imboutton_Undoc = pygame.image.load('SetImages1/Imboutton_Undoc.png')
 
 #interface échiquier
 Imvalidation = pygame.image.load('SetImages1/validation.png')
 Imelimination = pygame.image.load('SetImages1/elimination.png')
+CaseBlanche = pygame.image.load('SetImages1/CaseBlanche.png')
+CaseNoire = pygame.image.load('SetImages1/CaseNoire.png')
 
 #SetImages1 pièces
 Impb = pygame.image.load('SetImages1/PIONB.png')
@@ -73,9 +85,9 @@ Imdn = pygame.image.load('SetImages1/DAMEN.png')
 Imrb = pygame.image.load('SetImages1/ROIB.png')
 Imrn = pygame.image.load('SetImages1/ROIN.png')
 
-#pour la fonction transformation
-Im_showi = pygame.image.load('SetImages1/Im_showi.png')
-Im_showa = pygame.image.load('SetImages1/Im_showa.png')
+#transformation
+
+MagicalPromotion = pygame.image.load('SetImages1/MagicalPromotion.png')
 
 ImTBi = pygame.image.load('SetImages1/TBi.png')
 ImTBa = pygame.image.load('SetImages1/TBa.png')
@@ -194,7 +206,7 @@ def button_noclick( x, y, Imagei, Imagea, fonction, image_width, image_height,*a
 			fonction()
 	pygame.display.update()
 
-def button_click( x, y, Imagei, Imagea, Imagec, fonction, image_width, image_height,*args ):
+def button_click( x, y, Imagei, Imagea, Imagec, fonction, image_width, image_height, background, *args ):
 	gameDisplay.blit(Imagei,(x, y))
 	mouse = pygame.mouse.get_pos()
 	click = pygame.mouse.get_pressed()
@@ -204,11 +216,12 @@ def button_click( x, y, Imagei, Imagea, Imagec, fonction, image_width, image_hei
 	if x < mouse[0] < x + image_width and y < mouse[1] < y + image_height:
 		gameDisplay.blit(Imagea,(x, y))
 		if click[0] == 1:
-			gameDisplay.blit(Background_Menu, (0,0))
+			if background == Background_Menu:
+				gameDisplay.blit(Background_Menu,(0,0))
 			gameDisplay.blit(Imagec,(x, y))
 			pygame.display.update()
 			time.sleep(0.1)
-			gameDisplay.blit(Imagea,(x, y))
+			gameDisplay.blit(Imagei,(x, y))
 			pygame.display.update()
 			time.sleep(0.1)
 			if len(args) == 2 :
@@ -218,8 +231,8 @@ def button_click( x, y, Imagei, Imagea, Imagec, fonction, image_width, image_hei
 	pygame.display.update()
 
 
-def print_echiquiercase(y, x, ic):
-	pygame.draw.rect(gameDisplay , ic, (x, y, case_side, case_side))
+def print_echiquiercase(y, x, case):
+	gameDisplay.blit(case,(x,y))
 	return(x,y)
 
 
@@ -236,12 +249,12 @@ def echiquier():
 			if (j+i)%2 == 0:
 				i = border + side_gap + (i * case_side)
 				j = side_gap + j * case_side
-				list_definecase.append(print_echiquiercase( j, i, dark_brown))
+				list_definecase.append(print_echiquiercase( j, i, CaseBlanche))
 
 			else:
 				i = border + side_gap + (i * case_side)
 				j = side_gap + j * case_side
-				list_definecase.append(print_echiquiercase( j, i, Black))
+				list_definecase.append(print_echiquiercase( j, i, CaseNoire))
 	return list_definecase
 
 
@@ -272,15 +285,28 @@ def tf(rang, piece):
 def transformation(equipe, piece, liste_plateau, liste_case):
 
 	printpieces(liste_plateau,liste_case)
-	pygame.draw.rect(gameDisplay , green, (border, display_height/2 - (3/2) * case_side, echiquier_side + 2 * side_gap, case_side * 3))
-	pygame.display.update()
+
+	gameDisplay.blit(MagicalPromotion, (border, display_height/8))
+
+	if equipe == "blanc":
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 1 + (2 * case_side) * 0 + border, display_height/2 - case_side, ImTBi, ImTBa,tf , case_side * 2, case_side * 2, "tour", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 2 + (2 * case_side) * 1 + border, display_height/2 - case_side, ImCBi, ImCBa,tf , case_side * 2, case_side * 2, "cavalier", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 3 + (2 * case_side) * 2 + border, display_height/2 - case_side, ImFBi, ImFBa,tf , case_side * 2, case_side * 2, "fou", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 4 + (2 * case_side) * 3 + border, display_height/2 - case_side, ImDBi, ImDBa,tf , case_side * 2, case_side * 2, "dame", piece)
+		button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif , refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
+
+	elif equipe == "noir":
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 1 + (2 * case_side) * 0 + border, display_height/2 - case_side, ImTNi, ImTNa,tf , case_side * 2, case_side * 2, "tour", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 2 + (2 * case_side) * 1 + border, display_height/2 - case_side, ImCNi, ImCNa,tf , case_side * 2, case_side * 2, "cavalier", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 3 + (2 * case_side) * 2 + border, display_height/2 - case_side, ImFNi, ImFNa,tf , case_side * 2, case_side * 2, "fou", piece)
+		button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 4 + (2 * case_side) * 3 + border, display_height/2 - case_side, ImDNi, ImDNa,tf , case_side * 2, case_side * 2, "dame", piece)
+		button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif, refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
+
 
 	for image in Animation_oeil:
 		gameDisplay.blit(image,(border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border))
-		time.sleep(0.05)
+		time.sleep(0.01)
 		pygame.display.update()
-
-
 
 	boucle_transformation = True
 	while boucle_transformation:
@@ -288,20 +314,27 @@ def transformation(equipe, piece, liste_plateau, liste_case):
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
+
+		button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Imboutton_MainMenui, Imboutton_MainMenua, Imboutton_MainMenuc, game_menu, border * 0.7, border*0.7, Background_Loop )
+					
+		button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Imboutton_NewGamei, Imboutton_NewGamea, Imboutton_NewGamec, game_loop, border * 0.7, border*0.7, Background_Loop )
+
+		button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 3 * 0.15 * border - 3 * 0.7 * border, Imboutton_Undoi, Imboutton_Undoa, Imboutton_Undoc, game_loop, border * 0.7, border*0.7, Background_Loop )
+		
 		if equipe == "blanc":
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 1 + (2 * case_side) * 0 + border, display_height/2 - case_side, ImTBi, ImTBa,tf , case_side * 2, case_side * 2, "tour", piece)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 2 + (2 * case_side) * 1 + border, display_height/2 - case_side, ImCBi, ImCBa,tf , case_side * 2, case_side * 2, "cavalier", piece)
-			button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif , refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 3 + (2 * case_side) * 2 + border, display_height/2 - case_side, ImFBi, ImFBa,tf , case_side * 2, case_side * 2, "fou", piece)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 4 + (2 * case_side) * 3 + border, display_height/2 - case_side, ImDBi, ImDBa,tf , case_side * 2, case_side * 2, "dame", piece)
-		
+			button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif , refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
+
 		elif equipe == "noir":
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 1 + (2 * case_side) * 0 + border, display_height/2 - case_side, ImTNi, ImTNa,tf , case_side * 2, case_side * 2, "tour", piece)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 2 + (2 * case_side) * 1 + border, display_height/2 - case_side, ImCNi, ImCNa,tf , case_side * 2, case_side * 2, "cavalier", piece)
-			button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif, refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 3 + (2 * case_side) * 2 + border, display_height/2 - case_side, ImFNi, ImFNa,tf , case_side * 2, case_side * 2, "fou", piece)
 			button((((display_width - 2 * border) - 4 * 2 * case_side)/5) * 4 + (2 * case_side) * 3 + border, display_height/2 - case_side, ImDNi, ImDNa,tf , case_side * 2, case_side * 2, "dame", piece)
-		
+			button_noclick( border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border, Animation_oeil[29], oeil_actif, refresh_transformation, border * 0.7, border*0.7, liste_plateau, liste_case)
+
 		if piece.rang != "pion":
 			boucle_transformation = False
 
@@ -318,11 +351,23 @@ def refresh_false():
 		return False
 
 def refresh_transformation(liste_plateau, liste_case):
+
 	gameDisplay.blit(Background_Loop,(0,0))
+
 	echiquier()
+
 	printpieces(liste_plateau, liste_case)
+
+	button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Imboutton_MainMenui, Imboutton_MainMenua, Imboutton_MainMenuc, game_menu, border * 0.7, border*0.7, Background_Loop )
+	
+	button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Imboutton_NewGamei, Imboutton_NewGamea, Imboutton_NewGamec, game_loop, border * 0.7, border*0.7, Background_Loop )
+
+	button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 3 * 0.15 * border - 3 * 0.7 * border, Imboutton_Undoi, Imboutton_Undoa, Imboutton_Undoc, game_loop, border * 0.7, border*0.7, Background_Loop )
+	
 	gameDisplay.blit(oeil_actif,(border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border))
+
 	pygame.display.update()
+
 	boucle_refresh = True
 	while boucle_refresh:
 		for event in pygame.event.get():
@@ -332,11 +377,7 @@ def refresh_transformation(liste_plateau, liste_case):
 		boucle_refresh = refresh_false()
 		pygame.display.update()
 
-	gameDisplay.blit(Background_Loop,(0,0))
-	echiquier()
-	printpieces(liste_plateau, liste_case)
-	pygame.draw.rect(gameDisplay , green, (border, display_height/2 - (3/2) * case_side, echiquier_side + 2 * side_gap, case_side * 3))
-	pygame.display.update()
+	gameDisplay.blit(MagicalPromotion, (border, display_height/8))
 
 
 
@@ -440,10 +481,10 @@ def game_menu():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 1 + 0.3 * display_height + bouttonmenu_height * 0, Imboutton_j1i, Imboutton_j1a, Imboutton_j1c, game_loop, bouttonmenu_width, bouttonmenu_height )
-		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 2 + 0.3 * display_height + bouttonmenu_height * 1 , Imboutton_j2i, Imboutton_j2a, Imboutton_j2c, game_loop, bouttonmenu_width, bouttonmenu_height )
-		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 3 + 0.3 * display_height + bouttonmenu_height * 2, Imboutton_setupi, Imboutton_setupa, Imboutton_setupc, game_loop, bouttonmenu_width, bouttonmenu_height )
-		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 4 + 0.3 * display_height + bouttonmenu_height * 3, Imboutton_quiti, Imboutton_quita, Imboutton_quitc, QuitMenu, bouttonmenu_width, bouttonmenu_height )
+		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 1 + 0.3 * display_height + bouttonmenu_height * 0, Imboutton_j1i, Imboutton_j1a, Imboutton_j1c, game_loop, bouttonmenu_width, bouttonmenu_height, Background_Menu )
+		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 2 + 0.3 * display_height + bouttonmenu_height * 1 , Imboutton_j2i, Imboutton_j2a, Imboutton_j2c, game_loop, bouttonmenu_width, bouttonmenu_height, Background_Menu )
+		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 3 + 0.3 * display_height + bouttonmenu_height * 2, Imboutton_setupi, Imboutton_setupa, Imboutton_setupc, game_loop, bouttonmenu_width, bouttonmenu_height, Background_Menu )
+		button_click( bouttonmenu_widthgap, bouttonmenu_heightgap * 4 + 0.3 * display_height + bouttonmenu_height * 3, Imboutton_quiti, Imboutton_quita, Imboutton_quitc, QuitMenu, bouttonmenu_width, bouttonmenu_height, Background_Menu )
 		pygame.display.update()
 		clock.tick(120)
 
@@ -468,14 +509,16 @@ def game_loop():
 			liste_deplacement = piece.voir_deplacement(piece, liste_plateau, liste_case)
 			piece.isselected = True
 			while piece.isselected:
-
-				button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Im_showi, Im_showa, game_menu, border * 0.7, border*0.7 )
-				
-				button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Im_showi, Im_showa, game_loop, border * 0.7, border*0.7 )
 				
 				for event in pygame.event.get():
 					mouse = pygame.mouse.get_pos()
 					click = pygame.mouse.get_pressed()
+
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Imboutton_MainMenui, Imboutton_MainMenua, Imboutton_MainMenuc, game_menu, border * 0.7, border*0.7, Background_Loop )
+					
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Imboutton_NewGamei, Imboutton_NewGamea, Imboutton_NewGamec, game_loop, border * 0.7, border*0.7, Background_Loop )
+
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 3 * 0.15 * border - 3 * 0.7 * border, Imboutton_Undoi, Imboutton_Undoa, Imboutton_Undoc, game_loop, border * 0.7, border*0.7, Background_Loop )
 
 					if event.type == pygame.QUIT:
 						pygame.quit()
@@ -701,9 +744,11 @@ def game_loop():
 					mouse = pygame.mouse.get_pos()
 					click = pygame.mouse.get_pressed()
 
-					button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Im_showi, Im_showa, game_menu, border * 0.7, border*0.7 )
-				
-					button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Im_showi, Im_showa, game_loop, border * 0.7, border*0.7 )
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Imboutton_MainMenui, Imboutton_MainMenua, Imboutton_MainMenuc, game_menu, border * 0.7, border*0.7, Background_Loop )
+					
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Imboutton_NewGamei, Imboutton_NewGamea, Imboutton_NewGamec, game_loop, border * 0.7, border*0.7, Background_Loop )
+
+					button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 3 * 0.15 * border - 3 * 0.7 * border, Imboutton_Undoi, Imboutton_Undoa, Imboutton_Undoc, game_loop, border * 0.7, border*0.7, Background_Loop )
 
 					if event.type == pygame.QUIT:
 						pygame.quit()
@@ -989,8 +1034,6 @@ def game_loop():
 
 	gameDisplay.blit(Animation_oeil[0],(border + echiquier_side + 2 * side_gap + 0.15 * border, 0.15 * border))
 
-	pygame.display.update()
-
 	King = True
 	White = True
 	
@@ -1004,10 +1047,12 @@ def game_loop():
 
 			White, liste_plateau = play( White, liste_case, liste_plateau)
 
-			button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Im_showi, Im_showa, game_menu, border * 0.7, border*0.7 )
+			button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 0.15 * border - 0.7 * border, Imboutton_MainMenui, Imboutton_MainMenua, Imboutton_MainMenuc, game_menu, border * 0.7, border*0.7, Background_Loop )
 			
-			button( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Im_showi, Im_showa, game_loop, border * 0.7, border*0.7 )
+			button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 2 * 0.15 * border - 2 * 0.7 * border, Imboutton_NewGamei, Imboutton_NewGamea, Imboutton_NewGamec, game_loop, border * 0.7, border*0.7, Background_Loop )
 
+			button_click( border + echiquier_side + 2 * side_gap + 0.15 * border, display_height - 3 * 0.15 * border - 3 * 0.7 * border, Imboutton_Undoi, Imboutton_Undoa, Imboutton_Undoc, game_loop, border * 0.7, border*0.7, Background_Loop )
+			
 			pygame.display.update()
 
 		clock.tick(60)
