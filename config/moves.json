@@ -1,15 +1,6 @@
 {
 	"moves": {
-		"pawn": {
-			"white": {
-				"directions": [-9, -10, -11, -20],
-				"range": 1
-			},
-			"black": {
-				"directions": [9, 10, 11, 20],
-				"range": 1
-			}
-		},
+
 		"rook": {
 			"directions": [ -10, 10, -1, 1 ],
 			"range": "7"

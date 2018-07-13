@@ -33,10 +33,6 @@ class Piece:
 	with open('config/mailBox.json') as mailBoxFile:
 		tabs = json.load(mailBoxFile)
 		
-	'''
-	with open('config/pieces.json') as piecesConfigFile:
-		piecesCoords = json.load(piecesConfigFile)
-	'''
 	tab120 = tabs.get("tab120")
 	tab64 = tabs.get("tab64")
 
@@ -68,13 +64,13 @@ class Piece:
 
 	def initRange(self):
 		if (self.piece == EPiece.PAWN):
-			self.range = self.moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("range");
+			self.range = None
 		else: 
 			self.range = self.moves.get(self.piece.name.lower()).get("range");
 
 	def initDirection(self):
 		if (self.piece == EPiece.PAWN):
-			self.directions = self.moves.get(self.piece.name.lower()).get(self.side.name.lower()).get("directions");
+			self.directions = None
 		else:  
 			self.directions = self.moves.get(self.piece.name.lower()).get("directions");
 
@@ -86,6 +82,18 @@ class Piece:
 		coords = self.coordsFromVector(moveVector)
 		if (coords == -1): return True
 		return False
+
+	def removePieceFromCoord(self, occupiedCases, coord):
+		index = self.retrievePieceIndexFromCoord(occupiedCases, coord)
+		del occupiedCases[index];
+
+
+	def retrievePieceIndexFromCoord(self, occupiedCases, coord):
+		for k in range(0, len(occupiedCases)):
+			piece = occupiedCases[k];
+			if (piece.coord == coord):
+				return k
+		return -1;
 
 	"""
 	occupiedCases:[
@@ -122,12 +130,14 @@ class Piece:
 				availableMoves.append(self.coordsFromVector(k*i))
 		return availableMoves
 
-	def moves(self, occupiedCases, availableMoves, selectedMove):
+	def move(self, occupiedCases, selectedMove):
+		availableMoves = self.availableMoves(occupiedCases)
 		if not selectedMove in availableMoves:
 			print("This move is not correct")
 		else:
+			if self.isEnemyPiece(occupiedCases, selectedMove):
+				self.removePieceFromCoord(occupiedCases, selectedMove)
 			self.coord = selectedMove
-			if isEnemyPiece(occupiedCases, selectedMove):
 
 
 
