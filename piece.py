@@ -32,7 +32,11 @@ class Piece:
 
 	with open('config/mailBox.json') as mailBoxFile:
 		tabs = json.load(mailBoxFile)
-
+		
+	'''
+	with open('config/pieces.json') as piecesConfigFile:
+		piecesCoords = json.load(piecesConfigFile)
+	'''
 	tab120 = tabs.get("tab120")
 	tab64 = tabs.get("tab64")
 
@@ -58,6 +62,7 @@ class Piece:
 	#     "coord": 1,
 	#     "type": "bishop"
 	# }
+
 	def init(side, object):
 		return Piece(EPiece[object.get("type").upper()], side, object.get("coord"))
 
@@ -115,4 +120,15 @@ class Piece:
 					availableMoves.append(self.coordsFromVector(k*i))
 					break
 				availableMoves.append(self.coordsFromVector(k*i))
-		return availableMoves;
+		return availableMoves
+
+	def moves(self, occupiedCases, availableMoves, selectedMove):
+		if not selectedMove in availableMoves:
+			print("This move is not correct")
+		else:
+			self.coord = selectedMove
+			if isEnemyPiece(occupiedCases, selectedMove):
+
+
+
+
