@@ -36,11 +36,13 @@ class Piece:
 	tab120 = tabs.get("tab120")
 	tab64 = tabs.get("tab64")
 
+	number = 10
+
 	#piece: EPiece
 	#side: ESide
 	#coord: number
-	def __init__(self, piece, side, coord):
-		self.piece = piece
+	def __init__(self, _type, side, coord):
+		self.type = _type
 		self.side = side
 		self.coord = coord
 		self.firstMove = True
@@ -48,31 +50,66 @@ class Piece:
 		self.initDirection()
 
 	def __str__(self): 
-		return "Piece de type {0}, camp {1}, direction {2}, range {3}, coord {4}".format(self.piece.name, self.side.name, self.directions, self.range, self.coord)
+		return "Piece de type {0}, camp {1}, direction {2}, range {3}, coord {4}".format(self.type.name, self.side.name, self.directions, self.range, self.coord)
 
 	def __repr__(self):
-		return str(self) + "\n";
+		return str(self) + "\n"
 
 	# Initialize a new Piece with an object
 	# {
 	#     "coord": 1,
 	#     "type": "bishop"
 	# }
-
+	@staticmethod
 	def init(side, object):
 		return Piece(EPiece[object.get("type").upper()], side, object.get("coord"))
 
+	"""
+	occupiedCases:[
+			"piece": piece (typeof Piece)
+	]
+	"""
+	@staticmethod
+	def isAllyPiece(mySide, occupiedCases, coord):
+		for piece in occupiedCases:
+			if (piece.coord == coord):
+				if (piece.side == mySide):
+					return True
+		return False
+
+	# See isAllyPiece
+	@staticmethod
+	def isEnemyPiece(mySide, occupiedCases, coord):
+		for piece in occupiedCases:
+			if (piece.coord == coord):
+				if (piece.side != mySide):
+					return True
+		return False
+
+	@staticmethod
+	def removePieceFromCoord(occupiedCases, coord):
+		index = Piece.retrievePieceIndexInOccupiedCasesFromCoord(occupiedCases, coord)
+		del occupiedCases[index]
+
+	@staticmethod
+	def retrievePieceIndexInOccupiedCasesFromCoord(occupiedCases, coord):
+		for k in range(0, len(occupiedCases)):
+			piece = occupiedCases[k]
+			if (piece.coord == coord):
+				return k
+		return -1
+
 	def initRange(self):
-		if (self.piece == EPiece.PAWN):
+		if (self.type == EPiece.PAWN):
 			self.range = None
 		else: 
-			self.range = self.moves.get(self.piece.name.lower()).get("range");
+			self.range = self.moves.get(self.type.name.lower()).get("range")
 
 	def initDirection(self):
-		if (self.piece == EPiece.PAWN):
+		if (self.type == EPiece.PAWN):
 			self.directions = None
 		else:  
-			self.directions = self.moves.get(self.piece.name.lower()).get("directions");
+			self.directions = self.moves.get(self.type.name.lower()).get("directions")
 
 	def coordsFromVector(self, moveVector):
 		value64 = self.tab64[self.coord]
@@ -83,48 +120,21 @@ class Piece:
 		if (coords == -1): return True
 		return False
 
-	def removePieceFromCoord(self, occupiedCases, coord):
-		index = self.retrievePieceIndexFromCoord(occupiedCases, coord)
-		del occupiedCases[index];
-
-
-	def retrievePieceIndexFromCoord(self, occupiedCases, coord):
-		for k in range(0, len(occupiedCases)):
-			piece = occupiedCases[k];
-			if (piece.coord == coord):
-				return k
-		return -1;
-
-	"""
-	occupiedCases:[
-			"piece": piece (typeof Piece)
-	]
-	"""
-	def isAllyPiece(self, occupiedCases, coord):
-		for piece in occupiedCases:
-			if (piece.coord == coord):
-				if (piece.side == self.side):
-					return True
-		return False
-
-	# See isAllyPiece
-	def isEnemyPiece(self, occupiedCases, coord):
-		for piece in occupiedCases:
-			if (piece.coord == coord):
-				if (piece.side != self.side):
-					return True
-		return False
+	def transformation(self, piece, newType):
+		piece.type == newType
+		self.initRange()
+		self.initDirection()
 
 	def availableMoves(self, occupiedCases):
 		availableMoves = []
 
-		if(self.piece == EPiece.PAWN): return
+		if(self.type == EPiece.PAWN): return
 
 		for k in self.directions:
 			for i in range(1, self.range + 1):
 				if (self.isOutOfBounds(k*i)): break
-				if (self.isAllyPiece(occupiedCases, self.coordsFromVector(k*i))): break
-				if (self.isEnemyPiece(occupiedCases, self.coordsFromVector(k*i))):
+				if (Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))): break
+				if (Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))):
 					availableMoves.append(self.coordsFromVector(k*i))
 					break
 				availableMoves.append(self.coordsFromVector(k*i))
@@ -135,8 +145,8 @@ class Piece:
 		if not selectedMove in availableMoves:
 			print("This move is not correct")
 		else:
-			if self.isEnemyPiece(occupiedCases, selectedMove):
-				self.removePieceFromCoord(occupiedCases, selectedMove)
+			if Piece.isEnemyPiece(self.side, occupiedCases, selectedMove):
+				Piece.removePieceFromCoord(occupiedCases, selectedMove)
 			self.coord = selectedMove
 
 

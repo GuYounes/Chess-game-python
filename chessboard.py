@@ -1,4 +1,3 @@
-import json
 from player import Player
 from enums.enums import ESide
 

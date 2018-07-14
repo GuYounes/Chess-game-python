@@ -95,7 +95,7 @@ class Game:
 		while self.PieceIsSelected:
 			for move in self.chessboard.playerWhite.availableMoves(self.occupiedCases):
 				print("ça marche")
-	
+		
 
 
 g = Game()

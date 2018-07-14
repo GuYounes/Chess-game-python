@@ -1,6 +1,4 @@
-import json
-from piece import Piece
-from enums.enums import ESide, EPiece
+from piece import Piece, json
 
 class Player:
 
@@ -13,7 +11,7 @@ class Player:
 		self.initPiece()
 
 	def initPiece(self):
-		self.pieces = [];
+		self.pieces = []
 		for piece in self.piecesCoords.get(self.side.name.lower()):
 			self.pieces.append(Piece.init(self.side, piece))
 
