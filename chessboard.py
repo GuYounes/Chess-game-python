@@ -23,7 +23,9 @@ class ChessBoard:
 chess = ChessBoard()
 player = chess.playerWhite
 piece = player.pieces[10]
-print(piece.availableMoves(chess.occupiedCases))
+print(chess.occupiedCases)
 
+piece.move(chess.occupiedCases, 42)
+print(chess.occupiedCases)
 
 

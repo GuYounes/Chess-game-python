@@ -13,7 +13,7 @@ class Player:
 		self.initPiece()
 
 	def initPiece(self):
-		self.pieces = [];
+		self.pieces = []
 		for piece in self.piecesCoords.get(self.side.name.lower()):
 			self.pieces.append(Piece.init(self.side, piece))
 

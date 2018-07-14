@@ -36,11 +36,13 @@ class Piece:
 	tab120 = tabs.get("tab120")
 	tab64 = tabs.get("tab64")
 
+	number = 10
+
 	#piece: EPiece
 	#side: ESide
 	#coord: number
-	def __init__(self, piece, side, coord):
-		self.piece = piece
+	def __init__(self, _type, side, coord):
+		self.type = _type
 		self.side = side
 		self.coord = coord
 		self.firstMove = True
@@ -48,31 +50,31 @@ class Piece:
 		self.initDirection()
 
 	def __str__(self): 
-		return "Piece de type {0}, camp {1}, direction {2}, range {3}, coord {4}".format(self.piece.name, self.side.name, self.directions, self.range, self.coord)
+		return "Piece de type {0}, camp {1}, direction {2}, range {3}, coord {4}".format(self.type.name, self.side.name, self.directions, self.range, self.coord)
 
 	def __repr__(self):
-		return str(self) + "\n";
+		return str(self) + "\n"
 
 	# Initialize a new Piece with an object
 	# {
 	#     "coord": 1,
 	#     "type": "bishop"
 	# }
-
+	@staticmethod
 	def init(side, object):
 		return Piece(EPiece[object.get("type").upper()], side, object.get("coord"))
 
 	def initRange(self):
-		if (self.piece == EPiece.PAWN):
+		if (self.type == EPiece.PAWN):
 			self.range = None
 		else: 
-			self.range = self.moves.get(self.piece.name.lower()).get("range");
+			self.range = self.moves.get(self.type.name.lower()).get("range")
 
 	def initDirection(self):
-		if (self.piece == EPiece.PAWN):
+		if (self.type == EPiece.PAWN):
 			self.directions = None
 		else:  
-			self.directions = self.moves.get(self.piece.name.lower()).get("directions");
+			self.directions = self.moves.get(self.type.name.lower()).get("directions")
 
 	def coordsFromVector(self, moveVector):
 		value64 = self.tab64[self.coord]
@@ -85,15 +87,20 @@ class Piece:
 
 	def removePieceFromCoord(self, occupiedCases, coord):
 		index = self.retrievePieceIndexFromCoord(occupiedCases, coord)
-		del occupiedCases[index];
-
+		del occupiedCases[index]
 
 	def retrievePieceIndexFromCoord(self, occupiedCases, coord):
 		for k in range(0, len(occupiedCases)):
-			piece = occupiedCases[k];
+			piece = occupiedCases[k]
 			if (piece.coord == coord):
 				return k
-		return -1;
+		return -1
+
+	def transformation(self, piece, newType):
+		piece.type == newType
+		self.initRange()
+		self.initDirection()
+
 
 	"""
 	occupiedCases:[
@@ -118,7 +125,7 @@ class Piece:
 	def availableMoves(self, occupiedCases):
 		availableMoves = []
 
-		if(self.piece == EPiece.PAWN): return
+		if(self.type == EPiece.PAWN): return
 
 		for k in self.directions:
 			for i in range(1, self.range + 1):
