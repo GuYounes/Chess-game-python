@@ -19,7 +19,6 @@ bouttonmenu_widthgap = int(WIDTHDISPLAY - bouttonmenu_width) / 2
 
 BRIGHT_BLUE = (20,170,220)
 BRIGHT_GREEN = (0,200,0)
-'''
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREY = (60,60,60)
@@ -28,4 +27,3 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 LIGHT_BROWN = (110,50,15)
 DARK_BROWN = (235,220,192)
-'''

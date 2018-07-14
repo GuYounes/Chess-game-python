@@ -1,6 +1,4 @@
-import json
-from piece import Piece
-from enums.enums import ESide, EPiece
+from piece import Piece, json
 
 class Player:
 
