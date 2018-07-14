@@ -14,7 +14,7 @@ class Game:
 		self.new()
 
 	def new(self):
-		self.init_draw()
+		self.initDraw()
 		self.grid = self.getAndPrintGrid() #The key to transit between coords and the screen
 		self.chessboard = ChessBoard()
 		self.run()
@@ -27,11 +27,11 @@ class Game:
 			self.draw()
 
 	def events(self):
-		for event in pygame.event.get():
+		for event in pg.event.get():
 
 			click = pg.mouse.get_pressed()
 
-			if event.type == pygame.QUIT:
+			if event.type == pg.QUIT:
 				pg.quit()
 				quit()
 		
@@ -53,7 +53,7 @@ class Game:
 	def draw(self):
 		self.getAndPrintGrid()
 		if self.pointedSquareIsActiv:
-			pygame.draw.rect(self.screen, BRIGHT_GREEN, (self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1], SQUARE_SIDE, SQUARE_SIDE))
+			pg.draw.rect(self.screen, BRIGHT_GREEN, (self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1], SQUARE_SIDE, SQUARE_SIDE))
 		pygame.display.flip()
 
 	def updateMouse(self):
@@ -63,7 +63,7 @@ class Game:
 				return index
 
 
-	def init_draw(self):
+	def initDraw(self):
 		self.screen.blit(BG_GAME,(0,0))
 
 	def getAndPrintGrid(self):
@@ -95,7 +95,7 @@ class Game:
 		while self.PieceIsSelected:
 			for move in self.chessboard.playerWhite.availableMoves(self.occupiedCases):
 				print("ça marche")
-		
+	
 
 
 g = Game()
