@@ -20,10 +20,3 @@ class ChessBoard:
 		for piece in self.playerBlack.pieces:
 			self.occupiedCases.append(piece)
 
-chess = ChessBoard()
-player = chess.playerWhite
-piece = player.pieces[10]
-print(piece.availableMoves(chess.occupiedCases))
-
-
-
