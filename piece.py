@@ -129,15 +129,19 @@ class Piece:
 
 		if(self.type == EPiece.PAWN):
 			if self.side == ESide.WHITE:
-				if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(-10)) and not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(-10))):
-					availableMoves.append(self.coordsFromVector(-10))
-				if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(-20)) and not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(-10)) and self.firstMove):
-					availableMoves.append(self.coordsFromVector(-20))
-				if False: #pawn capture to the right
-					pass
+				basicMove = -10
+			else:
+				basicMove = 10
+			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)))):
+				availableMoves.append(self.coordsFromVector(basicMove))
+			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2))) and (self.firstMove)):
+				availableMoves.append(self.coordsFromVector(basicMove*2))
+			if False: #pawn capture to the right
+				pass
+			if False: #pawn capture to the left
+				pass
 
-				if False: #pawn capture to the left
-					pass
+
 			return availableMoves
 
 		for k in self.directions:
@@ -149,6 +153,7 @@ class Piece:
 					break
 				availableMoves.append(self.coordsFromVector(k*i))
 		return availableMoves
+
 
 	def move(self, occupiedCases, selectedMove):
 		availableMoves = self.availableMoves(occupiedCases)
