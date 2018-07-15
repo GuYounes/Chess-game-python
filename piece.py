@@ -130,18 +130,18 @@ class Piece:
 		if(self.type == EPiece.PAWN):
 			if self.side == ESide.WHITE:
 				basicMove = -10
+				captureMove = [-11, -9]
 			else:
 				basicMove = 10
+				captureMove = [11, 9]
 			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)))):
 				availableMoves.append(self.coordsFromVector(basicMove))
 			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2))) and (self.firstMove)):
 				availableMoves.append(self.coordsFromVector(basicMove*2))
-			if False: #pawn capture to the right
-				pass
-			if False: #pawn capture to the left
-				pass
-
-
+			for move in captureMove:
+				if ((not self.isOutOfBounds(move)) and (Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(move)))):
+					availableMoves.append(self.coordsFromVector(move))
+			
 			return availableMoves
 
 		for k in self.directions:
