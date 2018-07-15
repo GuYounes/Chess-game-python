@@ -1,6 +1,7 @@
 import pygame as pg
 from chessboard import ChessBoard, ESide
 from piece import Piece
+from enums.enums import EPiece
 from images import * 
 from settings import *
 
@@ -10,13 +11,13 @@ class Game:
 		self.screen = pg.display.set_mode((WIDTHDISPLAY, HEIGHTDISPLAY))
 		pg.display.set_caption(TITLE)
 		self.clock = pg.time.Clock()
-		self.turn = ESide.WHITE #True for white, False for black
+		self.turn = ESide.WHITE
 		self.currentPiece = None
 		self.new()
 
 	def new(self):
 		self.initDraw()
-		self.grid = self.getAndPrintGrid() #The key to transit between coords and the screen
+		self.grid = self.getAndDrawGrid() #The key to transit between coords and the screen
 		self.chessboard = ChessBoard()
 		self.run()
 
@@ -60,13 +61,48 @@ class Game:
 
 
 	def draw(self):
-		self.getAndPrintGrid()
+		self.getAndDrawGrid()
 		if self.pointedSquare != -1:
 			pygame.draw.rect(self.screen, BRIGHT_GREEN, (self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1], SQUARE_SIDE, SQUARE_SIDE))
 		if (self.currentPiece != None):
-			pass
+			for square in self.currentPiece.availableMoves(self.chessboard.occupiedCases):
+				self.screen.blit(IMVALID,(self.grid[square][0], self.grid[square][1]))
+		self.drawPieces()
 		pygame.display.flip()
 
+	def drawPieces(self):
+		for piece in self.chessboard.occupiedCases:
+			if piece.type == EPiece.PAWN:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWP,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBP,self.grid[piece.coord])
+			if piece.type == EPiece.ROOK:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWR,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBR,self.grid[piece.coord])
+			if piece.type == EPiece.KNIGHT:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWK,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBK,self.grid[piece.coord])
+			if piece.type == EPiece.BISHOP:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWB,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBB,self.grid[piece.coord])
+			if piece.type == EPiece.QUEEN:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWQ,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBQ,self.grid[piece.coord])
+			if piece.type == EPiece.KING:
+				if piece.side == ESide.WHITE:
+					self.screen.blit(IMWKING,self.grid[piece.coord])
+				else:
+					self.screen.blit(IMBKING,self.grid[piece.coord])
+	
 	def retrieveCoordFromMouseIfAvailable(self):
 		case = self.retrieveCoordFromMouse()
 		if (self.currentPiece != None):
@@ -93,7 +129,7 @@ class Game:
 	def initDraw(self):
 		self.screen.blit(BG_GAME,(0,0))
 
-	def getAndPrintGrid(self):
+	def getAndDrawGrid(self):
 		squares = []
 		debug = 0
 		for j in range (8):

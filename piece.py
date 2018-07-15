@@ -36,7 +36,6 @@ class Piece:
 	tab120 = tabs.get("tab120")
 	tab64 = tabs.get("tab64")
 
-	number = 10
 
 	#piece: EPiece
 	#side: ESide
@@ -128,7 +127,18 @@ class Piece:
 	def availableMoves(self, occupiedCases):
 		availableMoves = []
 
-		if(self.type == EPiece.PAWN): return
+		if(self.type == EPiece.PAWN):
+			if self.side == ESide.WHITE:
+				if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(-10)) and not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(-10))):
+					availableMoves.append(self.coordsFromVector(-10))
+				if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(-20)) and not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(-10)) and self.firstMove):
+					availableMoves.append(self.coordsFromVector(-20))
+				if False: #pawn capture to the right
+					pass
+
+				if False: #pawn capture to the left
+					pass
+			return availableMoves
 
 		for k in self.directions:
 			for i in range(1, self.range + 1):
@@ -142,12 +152,10 @@ class Piece:
 
 	def move(self, occupiedCases, selectedMove):
 		availableMoves = self.availableMoves(occupiedCases)
-		if not selectedMove in availableMoves:
-			print("This move is not correct")
-		else:
-			if Piece.isEnemyPiece(self.side, occupiedCases, selectedMove):
-				Piece.removePieceFromCoord(occupiedCases, selectedMove)
-			self.coord = selectedMove
+		if Piece.isEnemyPiece(self.side, occupiedCases, selectedMove):
+			Piece.removePieceFromCoord(occupiedCases, selectedMove)
+		self.coord = selectedMove
+		self.firstMove = False
 
 
 

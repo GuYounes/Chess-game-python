@@ -36,24 +36,24 @@ Imboutton_Undoa = pygame.image.load('SetImages1/Imboutton_Undoa.png')
 Imboutton_Undoc = pygame.image.load('SetImages1/Imboutton_Undoc.png')
 
 #interface échiquier
-Imvalidation = pygame.image.load('SetImages1/validation.png')
+IMVALID = pygame.image.load('SetImages1/validation.png')
 Imelimination = pygame.image.load('SetImages1/elimination.png')
 WHITESQUARE = pygame.image.load('SetImages1/CaseBlanche.png')
 BLACKSQUARE = pygame.image.load('SetImages1/CaseNoire.png')
 
 #SetImages1 pièces
-Impb = pygame.image.load('SetImages1/PIONB.png')
-Impn = pygame.image.load('SetImages1/PIONN.png')
-Imtb = pygame.image.load('SetImages1/TOURB.png')
-Imtn = pygame.image.load('SetImages1/TOURN.png')
-Imcb = pygame.image.load('SetImages1/CAVALIERB.png')
-Imcn = pygame.image.load('SetImages1/CAVALIERN.png')
-Imfb = pygame.image.load('SetImages1/FOUB.png')
-Imfn = pygame.image.load('SetImages1/FOUN.png')
-Imdb = pygame.image.load('SetImages1/DAMEB.png')
-Imdn = pygame.image.load('SetImages1/DAMEN.png')
-Imrb = pygame.image.load('SetImages1/ROIB.png')
-Imrn = pygame.image.load('SetImages1/ROIN.png')
+IMWP = pygame.image.load('SetImages1/PIONB.png')
+IMBP = pygame.image.load('SetImages1/PIONN.png')
+IMWR = pygame.image.load('SetImages1/TOURB.png')
+IMBR = pygame.image.load('SetImages1/TOURN.png')
+IMWK = pygame.image.load('SetImages1/CAVALIERB.png')
+IMBK = pygame.image.load('SetImages1/CAVALIERN.png')
+IMWB = pygame.image.load('SetImages1/FOUB.png')
+IMBB = pygame.image.load('SetImages1/FOUN.png')
+IMWQ = pygame.image.load('SetImages1/DAMEB.png')
+IMBQ = pygame.image.load('SetImages1/DAMEN.png')
+IMWKING = pygame.image.load('SetImages1/ROIB.png')
+IMBKING = pygame.image.load('SetImages1/ROIN.png')
 
 #transformation
 
