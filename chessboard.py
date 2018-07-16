@@ -12,10 +12,12 @@ class ChessBoard:
 		return "Player white: {0}, Player black: {1}".format(self.playerWhite, self.playerBlack)
 
 	def initOccupiedCases(self):
-		self.occupiedCases = []
+		self.occupiedCases = {}
 		for piece in self.playerWhite.pieces:
-			self.occupiedCases.append(piece)
+			self.occupiedCases[piece.coord] = piece
 
 		for piece in self.playerBlack.pieces:
-			self.occupiedCases.append(piece)
+			self.occupiedCases[piece.coord] = piece
+
+	
 

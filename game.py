@@ -11,7 +11,7 @@ class Game:
 		self.screen = pg.display.set_mode((WIDTHDISPLAY, HEIGHTDISPLAY))
 		pg.display.set_caption(TITLE)
 		self.clock = pg.time.Clock()
-		self.turn = ESide.WHITE
+		self.turn = ESide.WHITE 
 		self.currentPiece = None
 		self.new()
 
@@ -54,8 +54,8 @@ class Game:
 			self.switchTurn()
 			self.currentPiece = None
 		else :
-			pieceIndex = Piece.retrievePieceIndexInOccupiedCasesFromCoord(self.chessboard.occupiedCases, self.pointedSquare)
-			if (pieceIndex != -1):
+			pieceIndex = self.pointedSquare
+			if (self.chessboard.occupiedCases.get(pieceIndex) != None):
 				self.currentPiece = self.chessboard.occupiedCases[pieceIndex]
 				print("select piece {0}".format(self.currentPiece))
 
@@ -75,7 +75,8 @@ class Game:
 		pygame.display.flip()
 
 	def drawPieces(self):
-		for piece in self.chessboard.occupiedCases:
+		for coord in self.chessboard.occupiedCases:
+			piece = self.chessboard.occupiedCases[coord]
 			if piece.type == EPiece.PAWN:
 				if piece.side == ESide.WHITE:
 					self.screen.blit(IMWP,self.grid[piece.coord])
@@ -106,17 +107,17 @@ class Game:
 					self.screen.blit(IMWKING,self.grid[piece.coord])
 				else:
 					self.screen.blit(IMBKING,self.grid[piece.coord])
-	
+
 	def retrieveCoordFromMouseIfAvailable(self):
 		case = self.retrieveCoordFromMouse()
 		if (self.currentPiece != None):
 			return case if case in self.currentPiece.availableMoves(self.chessboard.occupiedCases) or case == self.currentPiece.coord else -1
 		else:
-			for piece in self.chessboard.occupiedCases:
+			for coord in self.chessboard.occupiedCases:
 					if self.turn == ESide.WHITE:                  
-						if piece.coord == case and piece.side == ESide.WHITE: return case
+						if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.WHITE: return case
 					else: 
-						if piece.coord == case and piece.side == ESide.BLACK: return case
+						if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.BLACK: return case
 			return -1
 
 	def retrieveCoordFromMouse(self):

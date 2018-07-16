@@ -71,33 +71,23 @@ class Piece:
 	"""
 	@staticmethod
 	def isAllyPiece(mySide, occupiedCases, coord):
-		for piece in occupiedCases:
-			if (piece.coord == coord):
-				if (piece.side == mySide):
-					return True
-		return False
+		piece = occupiedCases.get(coord)
+		return True if (piece != None and piece.side == mySide) else False
 
 	# See isAllyPiece
 	@staticmethod
 	def isEnemyPiece(mySide, occupiedCases, coord):
-		for piece in occupiedCases:
-			if (piece.coord == coord):
-				if (piece.side != mySide):
-					return True
-		return False
+		piece = occupiedCases.get(coord)
+		return True if (piece != None and piece.side != mySide) else False
+
+	@staticmethod
+	def isEmptyCase(occupiedCases, coord):
+		return True if (occupiedCases.get(coord) == None) else False
 
 	@staticmethod
 	def removePieceFromCoord(occupiedCases, coord):
-		index = Piece.retrievePieceIndexInOccupiedCasesFromCoord(occupiedCases, coord)
-		del occupiedCases[index]
-
-	@staticmethod
-	def retrievePieceIndexInOccupiedCasesFromCoord(occupiedCases, coord):
-		for k in range(0, len(occupiedCases)):
-			piece = occupiedCases[k]
-			if (piece.coord == coord):
-				return k
-		return -1
+		if (occupiedCases.get(coord) != None):
+			del occupiedCases[coord]
 
 	def initRange(self):
 		if (self.type == EPiece.PAWN):
@@ -125,47 +115,67 @@ class Piece:
 		self.initRange()
 		self.initDirection()
 
+	def rock(self, selectedMove, occupiedCases):
+		if self.type == EPiece.KING and self.firstMove:
+			if self.side == ESide.WHITE:
+				if selectedMove == 62:
+					piece = occupiedCases.get(63)
+					if piece != None and piece.firstMove:
+						piece.move(occupiedCases, 61)
+				if selectedMove == 58:
+					piece = occupiedCases.get(56)
+					if piece != None and piece.firstMove:
+						piece.move(occupiedCases, 59)
+			if self.side == ESide.BLACK:
+				if selectedMove == 6:
+					piece = occupiedCases.get(7)
+					if piece != None and piece.firstMove:
+						piece.move(occupiedCases, 5)
+				if selectedMove == 2:
+					piece = occupiedCases.get(0)
+					if piece != None and piece.firstMove:
+						piece.move(occupiedCases, 3)
+		#checks if it's a rock move and move rooks if it the case
+
 	def availableMoves(self, occupiedCases):
 		availableMoves = []
 
 		if(self.type == EPiece.PAWN):
-			if self.side == ESide.WHITE:
-				basicMove = -10
-				captureMove = [-11, -9]
-			else:
-				basicMove = 10
-				captureMove = [11, 9]
-			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove)))):
+			basicMove = -10 if self.side == ESide.WHITE else 10
+			captureMove = [-11, -9] if self.side == ESide.WHITE else [11, 9]
+			# If the case in front of the pawn is empty, it can move 
+			if (Piece.isEmptyCase(occupiedCases, self.coordsFromVector(basicMove))):
 				availableMoves.append(self.coordsFromVector(basicMove))
-			if (not Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2)) and (not Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(basicMove*2))) and (self.firstMove)):
-				availableMoves.append(self.coordsFromVector(basicMove*2))
+				# If the second case in front of the pawn is empty, it can move
+				if (Piece.isEmptyCase(occupiedCases, self.coordsFromVector(basicMove*2)) and self.firstMove):
+					availableMoves.append(self.coordsFromVector(basicMove*2))
 			for move in captureMove:
 				if ((not self.isOutOfBounds(move)) and (Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(move)))):
 					availableMoves.append(self.coordsFromVector(move))
 			return availableMoves
 		#Pawns require a specific code because the way they capture is different from the other pieces, and they have a special move if they haven't move yet
-
+		
 		if(self.type == EPiece.KING):
 			if self.side == ESide.WHITE:
 				if self.firstMove:
 					if not 61 in occupiedCases and not 62 in occupiedCases:
-						for piece in occupiedCases:
-							if piece.coord == 63 and piece.firstMove:
-								availableMoves.append(62)
+						piece = occupiedCases.get(63)
+						if (piece != None and piece.firstMove):
+							availableMoves.append(62)
 					if not 57 in occupiedCases and not 58 in occupiedCases and not 59 in occupiedCases:
-						for piece in occupiedCases:
-							if piece.coord == 56 and piece.firstMove:
-								availableMoves.append(58)
+						piece = occupiedCases.get(56)
+						if (piece != None and piece.firstMove):
+							availableMoves.append(58)
 			if self.side == ESide.BLACK:
 				if self.firstMove:
 					if not 5 in occupiedCases and not 6 in occupiedCases:
-						for piece in occupiedCases:
-							if piece.coord == 7 and piece.firstMove:
-								availableMoves.append(6)
+						piece = occupiedCases.get(7)
+						if (piece != None and piece.firstMove):
+							availableMoves.append(6)
 					if not 1 in occupiedCases and not 2 in occupiedCases and not 3 in occupiedCases:
-						for piece in occupiedCases:
-							if piece.coord == 0 and piece.firstMove:
-								availableMoves.append(2)
+						piece = occupiedCases.get(0)
+						if (piece != None and piece.firstMove):
+							availableMoves.append(2)
 		#checks if rock is available when a king is selected
 				
 		for k in self.directions:
@@ -178,7 +188,6 @@ class Piece:
 				availableMoves.append(self.coordsFromVector(k*i))
 		return availableMoves
 
-
 	def move(self, occupiedCases, selectedMove):
 
 		availableMoves = self.availableMoves(occupiedCases)
@@ -187,35 +196,21 @@ class Piece:
 			Piece.removePieceFromCoord(occupiedCases, selectedMove)
 		#capture a piece if the move is on  a square occupied by an ennemy piece
 
+		self.removePieceFromCoord(occupiedCases, self.coord)
 		self.coord = selectedMove
+		occupiedCases[selectedMove] = self
 		#move the selected piece to the selected square
 
-		if self.type == EPiece.KING and self.firstMove:
-			if self.side == ESide.WHITE:
-				if selectedMove == 62:
-					for piece in occupiedCases:
-						if piece.coord == 63:
-							piece.move(occupiedCases, 61)
-				if selectedMove == 58:
-					for piece in occupiedCases:
-						if piece.coord == 56:
-							piece.move(occupiedCases, 59)
-			if self.side == ESide.BLACK:
-				if selectedMove == 6:
-					for piece in occupiedCases:
-						if piece.coord == 7:
-							piece.move(occupiedCases, 5)
-				if selectedMove == 2:
-					for piece in occupiedCases:
-						if piece.coord == 0:
-							piece.move(occupiedCases, 3)
-		#checks if it's a rock move and move rooks if it the case
+		self.rock(selectedMove, occupiedCases)
 
 		self.firstMove = False
 		#the piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 
-		if self.type == EPiece.PAWN and self.side ==ESide.WHITE and self.coord < 7:
+		if self.type == EPiece.PAWN and self.side == ESide.WHITE and self.coord < 8:
 			self.transformation(EPiece.QUEEN)
-		if self.type == EPiece.PAWN and self.side ==ESide.WHITE and self.coord > 55:
+		if self.type == EPiece.PAWN and self.side == ESide.BLACK and self.coord > 55:
 			self.transformation(EPiece.QUEEN)
 		#call the transformation function when a PAWN reaches the end of the chessboard
+
+		print(occupiedCases)
+
