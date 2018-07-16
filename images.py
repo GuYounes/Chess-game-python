@@ -1,11 +1,11 @@
 import pygame
 
-#fonds
+#Backgrounds
 BG_MENU = pygame.image.load('SetImages1/Background_Menu.png')
 BG_GAME = pygame.image.load('SetImages1/Background_Loop.png')
 Icon = pygame.image.load('SetImages1/ico.jpg')
 
-#Boutton menu
+#Menu Buttons
 Imboutton_j1i = pygame.image.load('SetImages1/Imboutton_j1i.png')
 Imboutton_j1a = pygame.image.load('SetImages1/Imboutton_j1a.png')
 Imboutton_j1c = pygame.image.load('SetImages1/Imboutton_j1c.png')
@@ -22,7 +22,7 @@ Imboutton_quiti = pygame.image.load('SetImages1/Imboutton_quiti.png')
 Imboutton_quita = pygame.image.load('SetImages1/Imboutton_quita.png')
 Imboutton_quitc = pygame.image.load('SetImages1/Imboutton_quitc.png')
 
-#Boutton échiquier
+#Chessboard Buttons
 Imboutton_MainMenui = pygame.image.load('SetImages1/Imboutton_MainMenui.png')
 Imboutton_MainMenua = pygame.image.load('SetImages1/Imboutton_MainMenua.png')
 Imboutton_MainMenuc = pygame.image.load('SetImages1/Imboutton_MainMenuc.png')
@@ -35,13 +35,14 @@ Imboutton_Undoi = pygame.image.load('SetImages1/Imboutton_Undoi.png')
 Imboutton_Undoa = pygame.image.load('SetImages1/Imboutton_Undoa.png')
 Imboutton_Undoc = pygame.image.load('SetImages1/Imboutton_Undoc.png')
 
-#interface échiquier
+#Chessboard squares
 IMVALID = pygame.image.load('SetImages1/validation.png')
-Imelimination = pygame.image.load('SetImages1/elimination.png')
+IMCAPTURE = pygame.image.load('SetImages1/elimination.png')
+IMACTIVE_SQUARE = pygame.image.load('SetImages1/ACTIVE_SQUARE.png')
 WHITESQUARE = pygame.image.load('SetImages1/CaseBlanche.png')
 BLACKSQUARE = pygame.image.load('SetImages1/CaseNoire.png')
 
-#SetImages1 pièces
+#Images set1 for pieces
 IMWP = pygame.image.load('SetImages1/PIONB.png')
 IMBP = pygame.image.load('SetImages1/PIONN.png')
 IMWR = pygame.image.load('SetImages1/TOURB.png')
@@ -55,8 +56,7 @@ IMBQ = pygame.image.load('SetImages1/DAMEN.png')
 IMWKING = pygame.image.load('SetImages1/ROIB.png')
 IMBKING = pygame.image.load('SetImages1/ROIN.png')
 
-#transformation
-
+#Images set1 for transformation (could maybe get replaced by a rescale of original images)
 MagicalPromotion = pygame.image.load('SetImages1/MagicalPromotion.png')
 
 ImTBi = pygame.image.load('SetImages1/TBi.png')
@@ -77,7 +77,7 @@ ImFNa = pygame.image.load('SetImages1/FNa.png')
 ImDNi = pygame.image.load('SetImages1/DNi.png')
 ImDNa = pygame.image.load('SetImages1/DNa.png')
 
-#Animation
+#Eye animation (for transformation)
 oeil_actif = pygame.image.load('Animation oeil/Bouton_Ouvert_hoover.png')
 
 Animation0 = pygame.image.load('Animation oeil/animation_00000.png')

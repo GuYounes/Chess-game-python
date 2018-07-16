@@ -34,6 +34,7 @@ class Piece:
 		tabs = json.load(mailBoxFile)
 		
 	tab120 = tabs.get("tab120")
+
 	tab64 = tabs.get("tab64")
 
 
@@ -119,8 +120,8 @@ class Piece:
 		if (coords == -1): return True
 		return False
 
-	def transformation(self, piece, newType):
-		piece.type == newType
+	def transformation(self, newType):
+		self.type = newType
 		self.initRange()
 		self.initDirection()
 
@@ -141,9 +142,32 @@ class Piece:
 			for move in captureMove:
 				if ((not self.isOutOfBounds(move)) and (Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(move)))):
 					availableMoves.append(self.coordsFromVector(move))
-			
 			return availableMoves
+		#Pawns require a specific code because the way they capture is different from the other pieces, and they have a special move if they haven't move yet
 
+		if(self.type == EPiece.KING):
+			if self.side == ESide.WHITE:
+				if self.firstMove:
+					if not 61 in occupiedCases and not 62 in occupiedCases:
+						for piece in occupiedCases:
+							if piece.coord == 63 and piece.firstMove:
+								availableMoves.append(62)
+					if not 57 in occupiedCases and not 58 in occupiedCases and not 59 in occupiedCases:
+						for piece in occupiedCases:
+							if piece.coord == 56 and piece.firstMove:
+								availableMoves.append(58)
+			if self.side == ESide.BLACK:
+				if self.firstMove:
+					if not 5 in occupiedCases and not 6 in occupiedCases:
+						for piece in occupiedCases:
+							if piece.coord == 7 and piece.firstMove:
+								availableMoves.append(6)
+					if not 1 in occupiedCases and not 2 in occupiedCases and not 3 in occupiedCases:
+						for piece in occupiedCases:
+							if piece.coord == 0 and piece.firstMove:
+								availableMoves.append(2)
+		#checks if rock is available when a king is selected
+				
 		for k in self.directions:
 			for i in range(1, self.range + 1):
 				if (self.isOutOfBounds(k*i)): break
@@ -156,12 +180,42 @@ class Piece:
 
 
 	def move(self, occupiedCases, selectedMove):
+
 		availableMoves = self.availableMoves(occupiedCases)
+
 		if Piece.isEnemyPiece(self.side, occupiedCases, selectedMove):
 			Piece.removePieceFromCoord(occupiedCases, selectedMove)
+		#capture a piece if the move is on  a square occupied by an ennemy piece
+
 		self.coord = selectedMove
+		#move the selected piece to the selected square
+
+		if self.type == EPiece.KING and self.firstMove:
+			if self.side == ESide.WHITE:
+				if selectedMove == 62:
+					for piece in occupiedCases:
+						if piece.coord == 63:
+							piece.move(occupiedCases, 61)
+				if selectedMove == 58:
+					for piece in occupiedCases:
+						if piece.coord == 56:
+							piece.move(occupiedCases, 59)
+			if self.side == ESide.BLACK:
+				if selectedMove == 6:
+					for piece in occupiedCases:
+						if piece.coord == 7:
+							piece.move(occupiedCases, 5)
+				if selectedMove == 2:
+					for piece in occupiedCases:
+						if piece.coord == 0:
+							piece.move(occupiedCases, 3)
+		#checks if it's a rock move and move rooks if it the case
+
 		self.firstMove = False
+		#the piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 
-
-
-
+		if self.type == EPiece.PAWN and self.side ==ESide.WHITE and self.coord < 7:
+			self.transformation(EPiece.QUEEN)
+		if self.type == EPiece.PAWN and self.side ==ESide.WHITE and self.coord > 55:
+			self.transformation(EPiece.QUEEN)
+		#call the transformation function when a PAWN reaches the end of the chessboard

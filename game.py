@@ -63,10 +63,14 @@ class Game:
 	def draw(self):
 		self.getAndDrawGrid()
 		if self.pointedSquare != -1:
-			pygame.draw.rect(self.screen, BRIGHT_GREEN, (self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1], SQUARE_SIDE, SQUARE_SIDE))
+			self.screen.blit(IMACTIVE_SQUARE,(self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1]))
 		if (self.currentPiece != None):
 			for square in self.currentPiece.availableMoves(self.chessboard.occupiedCases):
-				self.screen.blit(IMVALID,(self.grid[square][0], self.grid[square][1]))
+				if self.currentPiece.isEnemyPiece(self.currentPiece.side, self.chessboard.occupiedCases, square):#add a visual element to let the player know he can capture a piece
+					self.screen.blit(IMCAPTURE,(self.grid[square][0], self.grid[square][1]))
+				else:
+					self.screen.blit(IMVALID,(self.grid[square][0], self.grid[square][1]))#add a visual element to let the player know the available squares
+
 		self.drawPieces()
 		pygame.display.flip()
 
