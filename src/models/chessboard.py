@@ -4,8 +4,8 @@ from enums.enums import ESide
 class ChessBoard:
 
 	def __init__(self):
-		self.playerWhite = Player(ESide.WHITE)
-		self.playerBlack = Player(ESide.BLACK)
+		self.playerWhite = Player(ESide.White)
+		self.playerBlack = Player(ESide.Black)
 		self.initOccupiedCases()
 
 	def __str__(self):
