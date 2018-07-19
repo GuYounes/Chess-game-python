@@ -49,18 +49,17 @@ class Game:
 					self.onAvailableCaseClick()
 				else:
 					self.currentPiece = None
-					print("deselect piece")
 
 	def onAvailableCaseClick(self): 
 		if (self.currentPiece != None):
-			self.currentPiece.move(self.chessboard.occupiedCases, self.pointedSquare)
+			self.chessboard.occupiedCases = self.currentPiece.move(self.currentPiece, self.chessboard.occupiedCases, self.pointedSquare)
+			print(self.chessboard.occupiedCases)
 			self.switchTurn()
 			self.currentPiece = None
 		else :
 			pieceIndex = self.pointedSquare
 			if (self.chessboard.occupiedCases.get(pieceIndex) != None):
 				self.currentPiece = self.chessboard.occupiedCases[pieceIndex]
-				print("select piece {0}".format(self.currentPiece))
 
 
 	def draw(self):

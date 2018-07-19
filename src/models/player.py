@@ -44,5 +44,3 @@ class Player:
     def __str__(self):
         return "Player {0}, pieces: {1}".format(self.side.name, self.pieces)
 
-p = Player(ESide.White)
-

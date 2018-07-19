@@ -52,8 +52,9 @@ class Piece:
 
 	@staticmethod
 	def removePieceFromCoord(occupiedCases, coord):
-		if (occupiedCases.get(coord) != None):
-			del occupiedCases[coord]
+		#if (occupiedCases.get(coord) != None):
+		del occupiedCases[coord]
+	
 
 	def coordsFromVector(self, moveVector):
 		value64 = self.tab64[self.coord]
@@ -98,7 +99,8 @@ class Piece:
 					break
 				availableMoves.append(self.coordsFromVector(k*i))
 		return availableMoves
-
+		
+	@staticmethod
 	def move(self, occupiedCases, selectedMove):
 		availableMoves = self.availableMoves(occupiedCases)
 
@@ -107,6 +109,7 @@ class Piece:
 			self.removePieceFromCoord(occupiedCases, selectedMove)
 
 		# Move the selected piece to the selected case
+		del occupiedCases[self.coord]
 		self.coord = selectedMove
 		occupiedCases[selectedMove] = self
 
@@ -116,5 +119,7 @@ class Piece:
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
 		print(occupiedCases)
+		return occupiedCases
+		
 
 
