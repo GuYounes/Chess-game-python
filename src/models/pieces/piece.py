@@ -65,28 +65,29 @@ class Piece:
 		if (coords == -1): return True
 		return False
 
-	def rock(self, selectedMove, occupiedCases):
+	def rock(self, occupiedCases, selectedMove):
+		print(occupiedCases)
 		if type(self).__name__ == EPiece.King.name and self.firstMove:
             #checks if it's a rock move and move rooks if it the case
 			if self.side == ESide.White:
 				if selectedMove == 62:
 					piece = occupiedCases.get(63)
 					if piece != None and piece.firstMove:
-						piece.move(occupiedCases, 61)
+						occupiedCases = piece.move(piece, occupiedCases, 61)
 				if selectedMove == 58:
 					piece = occupiedCases.get(56)
 					if piece != None and piece.firstMove:
-						piece.move(occupiedCases, 59)
-			if self.side == ESide.BLACK:
+						occupiedCases = piece.move(piece, occupiedCases, 59)
+			elif self.side == ESide.Black:
 				if selectedMove == 6:
 					piece = occupiedCases.get(7)
 					if piece != None and piece.firstMove:
-						piece.move(occupiedCases, 5)
+						occupiedCases = piece.move(piece, occupiedCases, 5)
 				if selectedMove == 2:
 					piece = occupiedCases.get(0)
 					if piece != None and piece.firstMove:
-						piece.move(occupiedCases, 3)
-		
+						occupiedCases = piece.move(piece, occupiedCases, 3)
+		return occupiedCases
 
 	def availableMoves(self, occupiedCases):
 		availableMoves = []
@@ -108,17 +109,16 @@ class Piece:
 		if self.isEnemyPiece(self.side, occupiedCases, selectedMove):
 			self.removePieceFromCoord(occupiedCases, selectedMove)
 
+        # Check if a rock is possible, if so move the rook
+		occupiedCases = self.rock(occupiedCases, selectedMove)
+
 		# Move the selected piece to the selected case
 		del occupiedCases[self.coord]
 		self.coord = selectedMove
 		occupiedCases[selectedMove] = self
 
-        # Check if a rock is possible, if so move the rook
-		self.rock(selectedMove, occupiedCases)
-
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
-		print(occupiedCases)
 		return occupiedCases
 		
 
