@@ -1,14 +1,14 @@
 import json
-from pieces.king import King, ESide
-from pieces.knight import Knight
-from pieces.queen import Queen
-from pieces.rook import Rook
-from pieces.bishop import Bishop
-from pieces.pawn import Pawn
+from king import King, ESide
+from knight import Knight
+from queen import Queen
+from rook import Rook
+from bishop import Bishop
+from pawn import Pawn
 
 class Player:
 
-    with open('../../config/pieces.json') as piecesConfigFile:
+    with open('../config/pieces.json') as piecesConfigFile:
         piecesCoords = json.load(piecesConfigFile)
 
     # side: ESide

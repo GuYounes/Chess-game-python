@@ -1,10 +1,10 @@
-import sys
 import os
-sys.path.append(os.path.join("../../"))
+import sys
+sys.path.append(os.path.join(".."))
 import pygame as pg
 from chessboard import ChessBoard, ESide
-from pieces.piece import Piece
-from enums.enums import EPiece
+from piece import Piece
+from enums import EPiece
 from images import * 
 from config.settings import *
 

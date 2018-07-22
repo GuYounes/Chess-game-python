@@ -1,4 +1,4 @@
-from pieces.piece import Piece, EPiece, ESide
+from piece import Piece, EPiece, ESide
 
 class Pawn(Piece):
 
@@ -23,7 +23,7 @@ class Pawn(Piece):
         return availableMoves
 
     # Transform the PAWN when it reaches the end of the chessboard
-    #def promotion(self, newType, occupiedCases):
+    def promotion(self, newType, occupiedCases):
         if ((self.side == ESide.White and self.coord < 8) or (self.side == ESide.Black and self.coord > 55)):
             if (newType == "Queen"):
                 occupiedCases[self.coord] = Queen(self.side, self.coord)

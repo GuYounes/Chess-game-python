@@ -1,12 +1,9 @@
-import sys
-import os
-sys.path.append(os.path.join(".."))
 import json
-from enums.enums import ESide, EPiece
+from enums import ESide, EPiece
 
 class Piece:
 
-	with open('../../config/mailBox.json') as mailBoxFile:
+	with open('../config/mailBox.json') as mailBoxFile:
 		tabs = json.load(mailBoxFile)
 		
 	tab120 = tabs.get("tab120")

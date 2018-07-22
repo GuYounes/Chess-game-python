@@ -1,5 +1,4 @@
-
-from pieces.piece import Piece, EPiece, ESide
+from piece import Piece, EPiece, ESide
 
 class King(Piece):
 
