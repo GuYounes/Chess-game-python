@@ -1,5 +1,5 @@
 from player import Player
-from enums.enums import ESide
+from enums import ESide
 
 class ChessBoard:
 
