@@ -22,15 +22,16 @@ class Pawn(Piece):
                 availableMoves.append(self.coordsFromVector(move))
         return availableMoves
 
+
     # Transform the PAWN when it reaches the end of the chessboard
-    #def promotion(self, newType, occupiedCases):
+    '''
+    def promotion(self, newType, occupiedCases):
         if ((self.side == ESide.White and self.coord < 8) or (self.side == ESide.Black and self.coord > 55)):
             if (newType == "Queen"):
                 occupiedCases[self.coord] = Queen(self.side, self.coord)
-
-    #def move(self, occupiedCases, selectedMove):
-    #    super(Pawn, self).move(occupiedCases, selectedMove)
-    #   self.promotion("Queen", occupiedCases)
-
-
+   
+    def move(self, occupiedCases, selectedMove):
+        super(Pawn, self).move(occupiedCases, selectedMove)
+        self.promotion("Queen", occupiedCases)
+    '''
         
