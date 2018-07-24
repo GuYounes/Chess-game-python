@@ -63,7 +63,6 @@ class Piece:
 		return False
 
 	def rock(self, occupiedCases, selectedMove):
-		print(occupiedCases)
 		if type(self).__name__ == EPiece.King.name and self.firstMove:
             #checks if it's a rock move and move rooks if it the case
 			if self.side == ESide.White:
@@ -116,6 +115,9 @@ class Piece:
 
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
+
+		if self.range == None:
+			occupiedCases = self.promotion("Queen", occupiedCases)
 		return occupiedCases
 		
 

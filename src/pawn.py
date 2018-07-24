@@ -1,4 +1,5 @@
 from piece import Piece, EPiece, ESide
+from queen import Queen
 
 class Pawn(Piece):
 
@@ -22,19 +23,14 @@ class Pawn(Piece):
                 availableMoves.append(self.coordsFromVector(move))
         return availableMoves
 
-
-    # Transform the PAWN when it reaches the end of the chessboard
-<<<<<<< HEAD:src/models/pieces/pawn.py
-    '''
-=======
->>>>>>> a8ba9edcd3e836e858590437ad31a7e029fbb562:src/pawn.py
+ 	# Transform the PAWN when it reaches the end of the chessboard
     def promotion(self, newType, occupiedCases):
         if ((self.side == ESide.White and self.coord < 8) or (self.side == ESide.Black and self.coord > 55)):
             if (newType == "Queen"):
-                occupiedCases[self.coord] = Queen(self.side, self.coord)
-   
-    def move(self, occupiedCases, selectedMove):
-        super(Pawn, self).move(occupiedCases, selectedMove)
-        self.promotion("Queen", occupiedCases)
-    '''
-        
+               occupiedCases[self.coord] = Queen(self.side, self.coord)
+        return occupiedCases
+'''
+def movepawn(self, occupiedCases, selectedMove):
+    super(Pawn, self).move(occupiedCases, selectedMove)
+    self.promotion("Queen", occupiedCases)
+'''

@@ -42,7 +42,6 @@ class Game:
 			self.pointedSquare = self.retrieveCoordFromMouseIfAvailable()
 			
 			if click[0] == 1:
-				print(self.pointedSquare)
 				if (self.currentPiece != None and self.currentPiece.coord == self.pointedSquare):
 					pass
 				elif (self.pointedSquare != -1):
@@ -53,7 +52,6 @@ class Game:
 	def onAvailableCaseClick(self): 
 		if (self.currentPiece != None):
 			self.chessboard.occupiedCases = self.currentPiece.move(self.currentPiece, self.chessboard.occupiedCases, self.pointedSquare)
-			print(self.chessboard.occupiedCases)
 			self.switchTurn()
 			self.currentPiece = None
 		else :
