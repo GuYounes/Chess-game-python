@@ -53,9 +53,11 @@ class Pawn(Piece):
 					enPassantPawnCoord = selectedMove + 8 if self.side == ESide.White else selectedMove - 8
 					del occupiedCases[enPassantPawnCoord]
 		return occupiedCases
-'''
-	def move(self, occupiedCases, selectedMove):
-		super(Pawn, self).move(self, occupiedCases, selectedMove)
+
+	def move(self, occupiedCases, selectedMove, gameReview):
+		occupiedCases = self.removeEnPassantPawn(occupiedCases, selectedMove)
+		super(Pawn, self).move(occupiedCases, selectedMove, gameReview)
 		self.promotion("Queen", occupiedCases)
-'''
+		return occupiedCases, gameReview
+
 

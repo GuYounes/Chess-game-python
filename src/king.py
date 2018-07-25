@@ -63,5 +63,10 @@ class King(Piece):
                         occupiedCases[3] = piece
         return occupiedCases
 
+    def move(self, occupiedCases, selectedMove, gameReview):
+        occupiedCases = self.rock(occupiedCases, selectedMove, gameReview)
+        super(King, self).move(occupiedCases, selectedMove, gameReview)
+        return occupiedCases, gameReview
+
 
         

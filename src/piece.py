@@ -68,17 +68,8 @@ class Piece:
 				availableMoves.append(self.coordsFromVector(k*i))
 		return availableMoves
 		
-	@staticmethod
 	def move(self, occupiedCases, selectedMove, gameReview):
 		gameReview.append([self.type, self.coord, selectedMove])
-
-		if self.type == 'pawn':
-			# Check if the move is en passant and take action
-			occupiedCases = self.removeEnPassantPawn(occupiedCases, selectedMove)
-
-		# Check if the move is a rock and take action
-		if self.type == 'king':
-			occupiedCases = self.rock(occupiedCases, selectedMove, gameReview)
 
 		# Capture a piece if the move is on a case occupied by an ennemy piece
 		if self.isEnemyPiece(self.side, occupiedCases, selectedMove):
@@ -88,10 +79,6 @@ class Piece:
 		del occupiedCases[self.coord]
 		self.coord = selectedMove
 		occupiedCases[selectedMove] = self
-
-		# Check if the pawn reached the end of the chessboard and take action
-		if self.type == 'pawn':
-			occupiedCases = self.promotion("Queen", occupiedCases)
 
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
