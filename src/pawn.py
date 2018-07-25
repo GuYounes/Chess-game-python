@@ -47,7 +47,7 @@ class Pawn(Piece):
 
 	def removeEnPassantPawn(self, occupiedCases,selectedMove):
 		if self.side == ESide.White and 23 < self.coord < 32 or self.side == ESide.Black and 31 < self.coord < 40:
-			if abs(selectedMove - self.coord) in [9, 11]: #very specific case, disallow the pawn to delete himself when he moves forward after not taking an opportunity of en passant
+			if abs(selectedMove - self.coord) in [7, 9]: #very specific case, disallow the pawn to delete himself when he moves forward after not taking an opportunity of en passant
 				if Piece.isEmptyCase(occupiedCases, selectedMove): #check if the move is on an empty case, so it makes sure it's en passant
 					enPassantPawnCoord = selectedMove + 8 if self.side == ESide.White else selectedMove - 8
 					del occupiedCases[enPassantPawnCoord]
