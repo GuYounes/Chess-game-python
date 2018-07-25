@@ -56,37 +56,6 @@ class Piece:
 		if (coords == -1): return True
 		return False
 
-	def rock(self, occupiedCases, selectedMove, gameReview):
-		if self.firstMove:
-            #checks if it's a rock move and move rooks if it the case
-			if self.side == ESide.White:
-				if selectedMove == 62:
-					piece = occupiedCases[63]
-					if piece != None and piece.firstMove:
-						del occupiedCases[piece.coord]
-						piece.coord = 61
-						occupiedCases[61] = piece
-				if selectedMove == 58:
-					piece = occupiedCases[56]
-					if piece != None and piece.firstMove:
-						del occupiedCases[piece.coord]
-						piece.coord = 59
-						occupiedCases[59] = piece
-			elif self.side == ESide.Black:
-				if selectedMove == 6:
-					piece = occupiedCases[7]
-					if piece != None and piece.firstMove:
-						del occupiedCases[piece.coord]
-						piece.coord = 5
-						occupiedCases[5] = piece
-				if selectedMove == 2:
-					piece = occupiedCases[0]
-					if piece != None and piece.firstMove:
-						del occupiedCases[piece.coord]
-						piece.coord = 3
-						occupiedCases[3] = piece
-		return occupiedCases
-
 	def availableMoves(self, occupiedCases, lastMove):
 		availableMoves = []
 		for k in self.directions:
@@ -103,9 +72,13 @@ class Piece:
 	def move(self, occupiedCases, selectedMove, gameReview):
 		gameReview.append([self.type, self.coord, selectedMove])
 
-		# Check if the move is en passant and take action
 		if self.type == 'pawn':
+			# Check if the move is en passant and take action
 			occupiedCases = self.removeEnPassantPawn(occupiedCases, selectedMove)
+
+		# Check if the move is a rock and take action
+		if self.type == 'king':
+			occupiedCases = self.rock(occupiedCases, selectedMove, gameReview)
 
 		# Capture a piece if the move is on a case occupied by an ennemy piece
 		if self.isEnemyPiece(self.side, occupiedCases, selectedMove):
@@ -116,15 +89,11 @@ class Piece:
 		self.coord = selectedMove
 		occupiedCases[selectedMove] = self
 
-		# Check if the move is a rock and take action
-		if self.type == 'king':
-			occupiedCases = self.rock(occupiedCases, selectedMove, gameReview)
-
 		# Check if the pawn reached the end of the chessboard and take action
 		if self.type == 'pawn':
 			occupiedCases = self.promotion("Queen", occupiedCases)
 
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
-		#print(gameReview)
+		print(gameReview)
 		return occupiedCases, gameReview

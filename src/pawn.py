@@ -45,6 +45,7 @@ class Pawn(Piece):
 				occupiedCases[self.coord] = Queen(self.side, self.coord)
 		return occupiedCases
 
+	# Remove a pawn when a en passant move is used
 	def removeEnPassantPawn(self, occupiedCases,selectedMove):
 		if self.side == ESide.White and 23 < self.coord < 32 or self.side == ESide.Black and 31 < self.coord < 40:
 			if abs(selectedMove - self.coord) in [7, 9]: #very specific case, disallow the pawn to delete himself when he moves forward after not taking an opportunity of en passant

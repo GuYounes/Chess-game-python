@@ -32,5 +32,36 @@ class King(Piece):
 
         return availableMoves + super(King, self).availableMoves(occupiedCases, lastMove)
 
+    def rock(self, occupiedCases, selectedMove, gameReview):
+        if self.firstMove:
+            #checks if it's a rock move and move rooks if it the case
+            if self.side == ESide.White:
+                if selectedMove == 62:
+                    piece = occupiedCases[63]
+                    if piece != None and piece.firstMove:
+                        del occupiedCases[piece.coord]
+                        piece.coord = 61
+                        occupiedCases[61] = piece
+                if selectedMove == 58:
+                    piece = occupiedCases[56]
+                    if piece != None and piece.firstMove:
+                        del occupiedCases[piece.coord]
+                        piece.coord = 59
+                        occupiedCases[59] = piece
+            elif self.side == ESide.Black:
+                if selectedMove == 6:
+                    piece = occupiedCases[7]
+                    if piece != None and piece.firstMove:
+                        del occupiedCases[piece.coord]
+                        piece.coord = 5
+                        occupiedCases[5] = piece
+                if selectedMove == 2:
+                    piece = occupiedCases[0]
+                    if piece != None and piece.firstMove:
+                        del occupiedCases[piece.coord]
+                        piece.coord = 3
+                        occupiedCases[3] = piece
+        return occupiedCases
+
 
         
