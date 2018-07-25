@@ -63,20 +63,28 @@ class Piece:
 				if selectedMove == 62:
 					piece = occupiedCases[63]
 					if piece != None and piece.firstMove:
-						occupiedCases = piece.move(piece, occupiedCases, 61, gameReview)
+						del occupiedCases[piece.coord]
+						piece.coord = 61
+						occupiedCases[61] = piece
 				if selectedMove == 58:
 					piece = occupiedCases[56]
 					if piece != None and piece.firstMove:
-						occupiedCases = piece.move(piece, occupiedCases, 59, gameReview)
+						del occupiedCases[piece.coord]
+						piece.coord = 59
+						occupiedCases[59] = piece
 			elif self.side == ESide.Black:
 				if selectedMove == 6:
 					piece = occupiedCases[7]
 					if piece != None and piece.firstMove:
-						occupiedCases = piece.move(piece, occupiedCases, 5, gameReview)
+						del occupiedCases[piece.coord]
+						piece.coord = 5
+						occupiedCases[5] = piece
 				if selectedMove == 2:
 					piece = occupiedCases[0]
 					if piece != None and piece.firstMove:
-						occupiedCases = piece.move(piece, occupiedCases, 3, gameReview)
+						del occupiedCases[piece.coord]
+						piece.coord = 3
+						occupiedCases[3] = piece
 		return occupiedCases
 
 	def availableMoves(self, occupiedCases, lastMove):
@@ -118,5 +126,5 @@ class Piece:
 
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
-		print(gameReview)
+		#print(gameReview)
 		return occupiedCases, gameReview
