@@ -4,8 +4,9 @@ class King(Piece):
 
     def __init__(self, side, coord):
         super().__init__(side, coord, 1, [ -10, 10, -1, 1, -11, -9, 11, 9 ])
+        self.type = 'king'
     
-    def availableMoves(self, occupiedCases):
+    def availableMoves(self, occupiedCases, lastMove):
         availableMoves = []
 		#checks if rock is available when a king is selected
         if self.side == ESide.White:
@@ -29,7 +30,7 @@ class King(Piece):
                     if (piece != None and piece.firstMove):
                         availableMoves.append(2)
 
-        return availableMoves + super(King, self).availableMoves(occupiedCases)
+        return availableMoves + super(King, self).availableMoves(occupiedCases, lastMove)
 
 
         

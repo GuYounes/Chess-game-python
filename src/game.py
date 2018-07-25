@@ -14,12 +14,13 @@ class Game:
 		self.screen = pg.display.set_mode((WIDTHDISPLAY, HEIGHTDISPLAY))
 		pg.display.set_caption(TITLE)
 		self.clock = pg.time.Clock()
-		self.turn = ESide.White 
-		self.currentPiece = None
 		self.new()
 
 	def new(self):
-		self.initDraw()
+		self.turn = ESide.White 
+		self.currentPiece = None
+		self.gameReview = [None, None, None] #keeps track of the moves played during the game
+		self.bgDraw()
 		self.grid = self.getAndDrawGrid() #The key to transit between coords and the screen
 		self.chessboard = ChessBoard()
 		self.run()
@@ -51,7 +52,7 @@ class Game:
 
 	def onAvailableCaseClick(self): 
 		if (self.currentPiece != None):
-			self.chessboard.occupiedCases = self.currentPiece.move(self.currentPiece, self.chessboard.occupiedCases, self.pointedSquare)
+			self.chessboard.occupiedCases, self.gameReview = self.currentPiece.move(self.currentPiece, self.chessboard.occupiedCases, self.pointedSquare, self.gameReview)
 			self.switchTurn()
 			self.currentPiece = None
 		else :
@@ -61,11 +62,12 @@ class Game:
 
 
 	def draw(self):
+		lastMove = self.gameReview[-1]
 		self.getAndDrawGrid()
 		if self.pointedSquare != -1:
 			self.screen.blit(IMACTIVE_SQUARE,(self.grid[self.pointedSquare][0], self.grid[self.pointedSquare][1]))
 		if (self.currentPiece != None):
-			for square in self.currentPiece.availableMoves(self.chessboard.occupiedCases):
+			for square in self.currentPiece.availableMoves(self.chessboard.occupiedCases, lastMove):
 				if self.currentPiece.isEnemyPiece(self.currentPiece.side, self.chessboard.occupiedCases, square):#add a visual element to let the player know he can capture a piece
 					self.screen.blit(IMCAPTURE,(self.grid[square][0], self.grid[square][1]))
 				else:
@@ -109,15 +111,16 @@ class Game:
 					self.screen.blit(IMBKING,self.grid[piece.coord])
 
 	def retrieveCoordFromMouseIfAvailable(self):
+		lastMove = self.gameReview[-1]
 		case = self.retrieveCoordFromMouse()
 		if (self.currentPiece != None):
-			return case if case in self.currentPiece.availableMoves(self.chessboard.occupiedCases) or case == self.currentPiece.coord else -1
+			return case if case in self.currentPiece.availableMoves(self.chessboard.occupiedCases, lastMove) or case == self.currentPiece.coord else -1
 		else:
 			for coord in self.chessboard.occupiedCases:
-					if self.turn == ESide.White:                  
-						if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.White: return case
-					else: 
-						if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.Black: return case
+				if self.turn == ESide.White:                  
+					if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.White: return case
+				else: 
+					if self.chessboard.occupiedCases[coord].coord == case and self.chessboard.occupiedCases[coord].side == ESide.Black: return case
 			return -1
 
 	def retrieveCoordFromMouse(self):
@@ -131,7 +134,7 @@ class Game:
 		self.turn = ESide.White if self.turn == ESide.Black else ESide.Black
 
 
-	def initDraw(self):
+	def bgDraw(self):
 		self.screen.blit(BG_GAME,(0,0))
 
 	def getAndDrawGrid(self):
