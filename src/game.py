@@ -52,7 +52,7 @@ class Game:
 
 	def onAvailableCaseClick(self): 
 		if (self.currentPiece != None):
-			self.chessboard.occupiedCases, self.gameReview = self.currentPiece.move(self.chessboard.occupiedCases, self.pointedSquare, self.gameReview)
+			self.currentPiece.move(self.chessboard.occupiedCases, self.pointedSquare, self.gameReview)
 			self.switchTurn()
 			self.currentPiece = None
 		else :

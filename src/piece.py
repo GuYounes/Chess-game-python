@@ -32,19 +32,19 @@ class Piece:
 			"coord": piece (typeof Piece)
 	]
 	"""
-	@staticmethod
-	def isAllyPiece(mySide, occupiedCases, coord):
+
+	def isAllyPiece(self, mySide, occupiedCases, coord):
 		piece = occupiedCases.get(coord)
 		return True if (piece != None and piece.side == mySide) else False
 
 	# See isAllyPiece
-	@staticmethod
-	def isEnemyPiece(mySide, occupiedCases, coord):
+
+	def isEnemyPiece(self, mySide, occupiedCases, coord):
 		piece = occupiedCases.get(coord)
 		return True if (piece != None and piece.side != mySide) else False
 
-	@staticmethod
-	def isEmptyCase(occupiedCases, coord):
+
+	def isEmptyCase(self, occupiedCases, coord):
 		return True if (occupiedCases.get(coord) == None) else False
 
 	def coordsFromVector(self, moveVector):
@@ -61,8 +61,8 @@ class Piece:
 		for k in self.directions:
 			for i in range(1, self.range + 1):
 				if (self.isOutOfBounds(k*i)): break
-				if (Piece.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))): break
-				if (Piece.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))):
+				if (self.isAllyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))): break
+				if (self.isEnemyPiece(self.side, occupiedCases, self.coordsFromVector(k*i))):
 					availableMoves.append(self.coordsFromVector(k*i))
 					break
 				availableMoves.append(self.coordsFromVector(k*i))
@@ -83,4 +83,4 @@ class Piece:
 		# The piece has moved, so if it's a pawn it cannot move by 2 square, and if it's a king or a rook it cannot rock anymore
 		self.firstMove = False
 		print(gameReview)
-		return occupiedCases, gameReview
+		
