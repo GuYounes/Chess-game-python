@@ -233,3 +233,4 @@ Animation29 = pygame.transform.scale(Animation29,(SCALE100,SCALE100))
 Animation_oeil = [Animation0,Animation1,Animation2,Animation3,Animation4,Animation5,Animation6,Animation7,Animation8,Animation9,Animation10,
 				Animation11,Animation12,Animation13,Animation14,Animation15,Animation16,Animation17,Animation18,Animation19,Animation20,
 				Animation21,Animation22,Animation23,Animation24,Animation25,Animation26,Animation27,Animation28,Animation29]
+IMPIECES = [[IMWP,IMWR,IMWB,IMWK,IMWQ,IMWKING],[IMBP,IMBR,IMBB,IMBK,IMBQ,IMBKING]]

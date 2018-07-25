@@ -8,7 +8,7 @@ class Pawn(Piece):
 
 	def __init__(self, side, coord):
 		super().__init__(side, coord, None, [])
-		self.type = 'pawn'
+		self.type = EPiece.Pawn
 	
 	def availableMoves(self, occupiedCases, lastMove):#lastMove is an array: [type, before move square, after move square]
 		availableMoves = []

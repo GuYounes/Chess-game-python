@@ -79,36 +79,7 @@ class Game:
 	def drawPieces(self):
 		for coord in self.chessboard.occupiedCases:
 			piece = self.chessboard.occupiedCases[coord]
-			if type(piece).__name__ == EPiece.Pawn.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWP,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBP,self.grid[piece.coord])
-			if type(piece).__name__ == EPiece.Rook.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWR,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBR,self.grid[piece.coord])
-			if type(piece).__name__ == EPiece.Knight.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWK,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBK,self.grid[piece.coord])
-			if type(piece).__name__ == EPiece.Bishop.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWB,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBB,self.grid[piece.coord])
-			if type(piece).__name__ == EPiece.Queen.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWQ,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBQ,self.grid[piece.coord])
-			if type(piece).__name__ == EPiece.King.name:
-				if piece.side == ESide.White:
-					self.screen.blit(IMWKING,self.grid[piece.coord])
-				else:
-					self.screen.blit(IMBKING,self.grid[piece.coord])
+			self.screen.blit(IMPIECES[piece.side.value][piece.type.value],self.grid[piece.coord])
 
 	def retrieveCoordFromMouseIfAvailable(self):
 		lastMove = self.gameReview[-1]
@@ -132,7 +103,6 @@ class Game:
 
 	def switchTurn(self):
 		self.turn = ESide.White if self.turn == ESide.Black else ESide.Black
-
 
 	def bgDraw(self):
 		self.screen.blit(BG_GAME,(0,0))

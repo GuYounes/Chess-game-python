@@ -4,7 +4,7 @@ class King(Piece):
 
     def __init__(self, side, coord):
         super().__init__(side, coord, 1, [ -10, 10, -1, 1, -11, -9, 11, 9 ])
-        self.type = 'king'
+        self.type = EPiece.King
     
     def availableMoves(self, occupiedCases, lastMove):
         availableMoves = []
